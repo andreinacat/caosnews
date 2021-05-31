@@ -1,0 +1,103 @@
+#contact-box{
+    background-color: ghostwhite;
+    padding: 10px;
+    border-radius: 10px;
+    max-width: 140vh;
+    box-shadow: 0px 0px 3px #848484;
+    border: solid 2px black;
+
+}
+.form-control{
+    border-radius: .2rem;
+}
+.modal-content{
+    background-color: #dde2e7;
+    opacity: .85;
+    padding: 0px 30px;
+    box-shadow: 0px 0px 3px #848484;
+    width: 100%;
+}
+
+.form-noti{
+    overflow: auto;
+    opacity: 0.92;    
+    width: 80%;
+    padding: 25px;
+    position: relative;
+}
+.user-img{
+    margin-top: -45px;
+    margin-bottom: 35px;
+}
+.user-img img{
+    width: 100px;
+    height: 100px;
+    box-shadow: 0px 0px 3px #848484;
+}
+#cont-box{
+    margin: auto;
+    padding: 5rem;
+}
+.register-bg {
+    background-image: url(../img/background/hero.jpg);
+    min-height: 400px; 
+    border-radius: 4px;
+}
+#for-input{
+    height: 40px;
+    font-size: 10px;
+    border: 0;
+    padding-left: 54px;
+    border-radius: 5px;  
+}
+.form-group{
+    padding: 10px;
+}
+.form-group::before{
+    font-family: "Font Awesome\ 5 Free";
+    position: absolute;
+    left: 28px;
+    font-size: 22px;
+    padding-top:4px;
+}
+.form-group#user-group::before{
+    padding-left: 20px;
+    content: "\f007";
+}
+.forgot{
+    padding: 5px 0;
+}
+
+.forgot a{
+    color: rgb(29, 27, 27);
+    font-size: medium;
+}
+
+.form-group#contrasena-group::before{
+    padding-left: 20px;
+    content: "\f023";
+}
+@media (max-width: 960px) { 
+    .register-bg {
+        min-height: 50vh;
+    }
+    #cont-box{
+        margin: auto;
+        padding: 0;
+        width: 95%;
+    }
+}
+@media (max-width: 575.98px) {
+    .form-noti{
+        padding: 0px;
+        width: 100%;
+    }
+    #contact-box{
+        margin: auto;
+        padding: 0;
+        width: 100%;
+    }
+    .width-100 {
+        width: 100%;
+    }
+}

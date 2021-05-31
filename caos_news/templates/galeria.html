@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block titulo %}
+<title>Galeria - Caos News</title>
+{% endblock titulo %}
+{% block contenido %}
+        <!--Galeria-->
+        <section class="container-fluid" id="galeria">
+            <div id="tarjeta">
+                <a href="{% static 'img/Galeria-test/img_lights_wide.jpg' %}" data-fancybox="gall-new1"
+                    data-caption="Autor imagen-01"><img src="{% static 'img/Galeria-test/img_lights_wide.jpg'%}" alt=""> </a>
+                <h5>Imagen 01 - Autor </h5>
+            </div>
+            <div id="tarjeta">
+                <a href="img/Galeria-test/img_mountains_wide.jpg" data-fancybox="gall-new1"
+                    data-caption="Autor imagen-02"><img src="img/Galeria-test/img_mountains_wide.jpg" alt=""> </a>
+                <h5>Imagen 02 - Autor </h5>
+            </div>
+            <div id="tarjeta">
+                <a href="img/Galeria-test/img_nature_wide.jpg" data-fancybox="gall-new1"
+                    data-caption="Autor imagen-03"><img src="img/Galeria-test/img_nature_wide.jpg" alt=""> </a>
+                <h5>Imagen 03 - Autor </h5>
+            </div>
+            <div id="tarjeta">
+                <a href="img/Galeria-test/img_snow_wide.jpg" data-fancybox="gall-new1"
+                    data-caption="Autor imagen-04"><img src="img/Galeria-test/img_snow_wide.jpg" alt=""> </a>
+                <h5>Imagen 04 - Autor </h5>
+            </div>
+            <div id="tarjeta">
+                <a href="img/noticias/internacional/internacional-01.jpg" data-fancybox="gall-new1"
+                    data-caption="Autor imagen-04"><img src="img/noticias/internacional/internacional-01.jpg" alt="">
+                </a>
+                <h5>Imagen 04 - Autor </h5>
+            </div>
+        </section>
+        <section class="container-fluid mt-4">
+            <div class="text-center">
+                <a href="Inter-noticia_01.html"><img src="img/logos/Back-gallerias.png" alt=""></a>
+            </div>
+        </section>
+{% endblock contenido %}

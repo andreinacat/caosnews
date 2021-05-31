@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+{%load static%}
+{% block titulo %}
+<title>Noticias - Caos News</title>
+{% endblock titulo %}
+{% block link_activos %}
+<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+    <li class="nav-item">
+        <a class="nav-link active" aria-current="page" href="{% url 'index'%}">Inicio</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'nos' %}">Nosotros</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'contac' %}">Contactanos</a>
+    </li>
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+            aria-expanded="false">
+            Noticias
+        </a>
+
+        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li>
+                <h6 class="dropdown-header">Por Categoria</h6>
+            </li>
+            {% for x in categorias %}
+            <li><a class="dropdown-item" href="{% url 'categ' x.nombre_catg %}">{{x.nombre_catg}}</a></li>
+            {% endfor %}
+            <li>
+                <hr class="dropdown-divider">
+            </li>
+            <li><a class="dropdown-item" href="Cat_Autor.html">Por Autor</a></li>
+            <li><a class="dropdown-item" href="{% url 'enviar_n' %}">enviar_noti</a></li>
+        </ul>
+    </li>
+    {% endblock link_activos %}
+    {% block contenido %}
+    <main>
+        <!--Barra de busqueda-->
+        <nav class="navbar sticky-top" id="barra-busqueda">
+            <div class="container-fluid ">
+                <span class="navbar-text">
+                    <h4>Noticias Frescas</h4>
+                </span>
+                <form class="d-flex">
+                    <input class="form-control me-2" type="search" placeholder="Buscar..." aria-label="Search">
+                    <button id="boton" class="btn btn-outline" type="submit">Buscar</button>
+                </form>
+            </div>
+        </nav>
+        <section class="container-fluid bg-news">
+            <div class="container-fluid" id="banner-noti">
+                <div>
+                    <img src="{{noticia.img_not.url}}" alt="">
+                    <div>
+                        <h1>{{noticia.nombre_not}}</h1>
+                    </div>
+                    <div>
+                        <h2>{{noticia.categoria}}</h2>
+                    </div>
+                </div>
+            </div>
+            <div id="autor" class="container-fluid">
+                <div>
+                    <p>Autor: Annon</p>
+                </div>
+                <div>
+                    <span>Fecha: {{noticia.fecha_not}}</span>
+                </div>
+            </div>
+        </section>
+        <section class="container-fluid mt-5">
+            <div class="row">
+                <div class="col-9" id="txt-news1">
+                    <div>
+                        <p>
+                            {{noticia.redac}}
+                            {{noticia.redac}}
+                        </p>
+                        <a href="{{noticia.img_not.url}}" data-fancybox
+                            data-caption="Autor - Imagen 04">
+                            <img src="{{noticia.img_not.url}}" alt="" />
+                        </a>
+                        <a href="{{noticia.img_not.url}}" data-fancybox
+                            data-caption="Autor - Imagen 01">
+                            <img src="{{noticia.img_not.url}}" alt="" />
+                        </a>
+                    </div>
+                    <div>
+                        <p>
+                            {{noticia.redac}}
+                            {{noticia.redac}}
+                        </p>
+                    </div>
+                </div>
+                <div class="col-3" id="gal-news1">
+                    <a href="{% static 'img/Galeria-test/img_lights_wide.jpg' %}" data-fancybox="gall-new1"
+                        data-caption="Autor - Imagen 01">
+                        <img src="{% static 'img/Galeria-test/img_lights_wide.jpg' %}" alt="" />
+                    </a>
+                    <a href="{% static 'img/Galeria-test/img_mountains_wide.' %}jpg" data-fancybox="gall-new1"
+                        data-caption="Autor - Imagen 02">
+                        <img src="{% static 'img/Galeria-test/img_mountains_wide.' %}jpg" alt="" />
+                    </a>
+                    <a href="{% static 'img/Galeria-test/img_nature_wide.jpg' %}" data-fancybox="gall-new1"
+                        data-caption="Autor - Imagen 05">
+                        <img src="{% static 'img/Galeria-test/img_nature_wide.jpg' %}" alt="" />
+                    </a>
+                    <div style="text-align: end;">
+                        <a href="{% url 'gal'%}">
+                            <p>Galeria --></p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section>
+            <div>{{noticia}}</div>
+        </section>
+    </main>
+
+
+    {% endblock contenido %}

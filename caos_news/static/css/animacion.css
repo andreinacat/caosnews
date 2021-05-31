@@ -1,0 +1,36 @@
+#tarjeta:hover{
+    animation: pulse;
+    animation-duration: 1s;
+}
+
+#ico_up:hover{
+    animation: shakeX ;
+    animation-duration: 1s;
+
+}
+#ico_mid:hover{
+    animation: swing ;
+    animation-duration: 1s;
+}
+#ico_down:hover{
+    animation: shakeX;
+    animation-duration: 1s;
+}
+main section #ico_up{
+    border: solid 2px black;
+    border-radius: 3px;
+    text-align: center;
+    overflow: hidden;
+}
+main section #ico_mid{
+    border: solid 2px black;
+    border-radius: 3px;
+    text-align: center;
+    overflow: hidden;
+}
+main section #ico_down{
+    border: solid 2px black;
+    border-radius: 3px;
+    text-align: center;
+    overflow: hidden;
+}

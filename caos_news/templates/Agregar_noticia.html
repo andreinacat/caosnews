@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block titulo %}
+<title>Registro - Caos News</title>
+{% endblock titulo %}
+{% block link_activos %}
+<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+    <li class="nav-item">
+        <a class="nav-link" aria-current="page" href="{% url 'index'%}">Inicio</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'nos' %}">Nosotros</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'contac' %}">Contactanos</a>
+    </li>
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+            aria-expanded="false">
+            Noticias
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li>
+                <h6 class="dropdown-header">Por Categoria</h6>
+            </li>
+            <li><a class="dropdown-item" href="Cat_nacional.html">{{categorias.nombre_catg}}</a></li>
+            <li><a class="dropdown-item" href="Cat_Internacional.html">Internacional</a></li>
+            <li><a class="dropdown-item" href="Cat_Deporte.html">Deporte</a></li>
+            <li>
+                <hr class="dropdown-divider">
+            </li>
+            <li><a class="dropdown-item" href="Cat_Autor.html">Por Autor</a></li>
+            <li><a class="dropdown-item" href="{% url 'enviar_n' %}">enviar_noti</a></li>
+        </ul>
+    </li>
+    {% endblock link_activos %}
+    {% block contenido %}
+    <section class="container-fluid p-6">
+        <div class="container-fluid p-5 animate__animated animate__fadeInLeft" id="contact-box">
+            <h2>Envia Tu Noticia</h2>
+            <hr class=" my-4">
+            <div class="row form-noti">
+                <div class="col-md-5">
+                    <address>DuocUc Sede Puente Alto Area Periodismo</address>
+                    <p>Email:- autor@email.com</p>
+                    <img src="{% static 'img/background/Formulario-Noticias_01.jpg' %}" class="img-thumbnail mt-4"
+                        alt="">
+                </div>
+                <div class="col-md-7">
+                    <form action="{% url 'enviar_n' %}" method="POST" enctype="multipart/form-data" onsubmit="return validar_noticia()">
+                        {% csrf_token %}
+                        <div class="form-row mb-1">
+                            <div class="form-group col-md-10">
+                                <label class="font-weight-bold">Autor <span id="nombre_span"
+                                        class="text-danger">*</span></label>
+                                <input id="txtnombre" type="text" class="form-control" id="for-input" name="txtname"
+                                    placeholder="Tu nombre" oninput="validar_nombre()" required pattern="[A-Za-z]+{3,25}"
+                                    minlength="3" maxlength="25">
+                            </div>
+                            <div class="form-group col-md-10">
+                                <label for="formFileMultiple" class="form-label">Sube tus Imágenes<span id="img_span1"
+                                        class="text-danger">*</span></label>
+                                <input id="imgfile1" class="form-control" type="file" name="img_noti" accept="image/*" >
+                            </div>
+                        </div>
+                        <div class="form-group" style="width: 84.1%;">
+                            <label class="font-weight-bold">Categoria <span class="text-danger"
+                                    id="categoria_span">*</span></label>
+                            <select id="txtcategoria" name="txtcategoria" class="form-select form-select"
+                                aria-label=".form-select-sm example" onclick="validar_categoria()" required>
+                                <option selected>Selecciona una Categoria</option>
+                                {% for x in categorias %}
+                                <option selected>{{x.nombre_catg}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group col-md-10">
+                            <label class="font-weight-bold">Titulo Noticia <span id="nombre_span"
+                                    class="text-danger">*</span></label>
+                            <input id="txttitulo" type="text" class="form-control" id="for-input" name="txttitulo"
+                                placeholder="Titulo" oninput="validar_nombre()" required pattern="[A-Za-z]+"
+                                minlength="3" maxlength="25">
+                        </div>
+                        <div class="form-group mb-5">
+                            <label class="font-weight-bold">Redacta tu Noticia<span id="noticia_span"
+                                    class="text-danger">*</span></label>
+                            <textarea id="txtnoticia" name="txtnoticia" class="form-control" name="contacto" placeholder="Redacta"
+                                oninput="validar_txt()" required></textarea>
+                        </div>
+                        <div class="text-end">
+                            <button class="btn btn-outline width-100 col-btn-sm mb-1" type="" id="boton"
+                                onclick="esconder()">galeria</button>
+                            <button class="btn btn-outline width-100 col-btn-sm mb-1" type="reset"
+                                id="boton">Limpiar</button>
+                            <button class="btn btn-outline width-100 col-btn-sm mb-1" type="submit"
+                                id="boton">Enviar</button>
+                        </div>
+                    </form>
+                </div>
+                <div id="gale" class="row-3"
+                    style="margin-top: 30px; background-color: rgb(103, 123, 160); border-width: 20px; border-radius: 10px; border-color: darkblue;"
+                    hidden=true>
+                    <img id="output1" width="200" height="200" />
+                    <img id="output2" width="200" height="200" />
+                    <img id="output1" width="200" height="200" />
+                    <img id="output2" width="200" height="200" />
+
+                </div>
+            </div>
+        </div>
+    </section>
+    {% endblock contenido %}
+
+
+{% block categorias %}
+    {% for x in categorias %}
+        <li><a href="{% url 'categ' x.nombre_catg %}">{{x.nombre_catg}}</a></li>
+    {% endfor %}                        
+{% endblock categorias %}
