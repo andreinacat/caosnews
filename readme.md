@@ -1,6 +1,9 @@
-aca estaran todas las versiones de benjamin dentro de una tarea 
-solo te queda armar el entorno de periodista
-yo trabajo en login por ahora
+aca estaran todas las versiones de benjamin: 
+
+tareas pendientes: 
+- Armar el entorno de periodista
+- realizar filtros por categoria
+- Filtro por busqueda
 
 
 
