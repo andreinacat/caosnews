@@ -1,6 +1,9 @@
+from django.contrib import auth
 from django.shortcuts import render
 from django.contrib.auth.models import User
 from .models import Categoria,Noticia,Comentarios
+from django.contrib.auth import authenticate,logout,login as login_aut
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 ####SOLO FALTA FILTRO POR BUSQUEDA################
@@ -8,8 +11,16 @@ def index(request):
     categoria = Categoria.objects.all()
     noti_all = Noticia.objects.filter(publicar=True).order_by('-fecha_not')[:3]
     noti_index = Noticia.objects.filter(publicar=True).order_by('-fecha_not')[4:8]
-    context = {"categorias":categoria,"noticias":noti_all,"noticias_index":noti_index}
-    return render(request,"index.html",context)
+
+
+    if User.is_authenticated:
+        nombreu = request.user.username
+        context = {"categorias":categoria,"noticias":noti_all,"noticias_index":noti_index,"nombre":nombreu,"flag":True}
+        return render(request,"index.html",context)
+    else:
+        nombre =' '
+        contexto = {"categorias":categoria,"noticias":noti_all,"noticias_index":noti_index,"nombre":nombre}
+        return render(request,"index.html",contexto)
 
 def categoria(request,id):
     cate_all = Categoria.objects.all()
@@ -19,8 +30,25 @@ def categoria(request,id):
     return render(request,"Categoria.html",context)
 
 def ingresar(request):
-    return render(request,"ingresar.html")
+    mensaje=""
+    if request.POST:
+        nombre = request.POST.get("name_user")
+        contra = request.POST.get("pass_user")
+        us = authenticate(request,username=nombre,password=contra)
+        if us is not None and us.is_active:
+            login_aut(request,us)
+            nombreu = request.user.username
+            categorias = Categoria.objects.all()
+            noti_all = Noticia.objects.filter(publicar=True).order_by('-fecha_not')[:3]
+            noti_index = Noticia.objects.filter(publicar=True).order_by('-fecha_not')[4:8]
+            contexto = {"categorias":categorias,"noticias":noti_all,"noticias_index":noti_index,"nombre":nombreu}
+            return render(request,"index.html",contexto)
+        else:
+            mensaje="no existe usuario o contraseña incorrecta" + str(nombre) + " "+ str(contra)
 
+
+    contexto={"mensaje":mensaje}
+    return render(request,"ingresar.html",contexto)
 
 
 def noticias(request,id):
@@ -86,9 +114,14 @@ def registrar(request):
     return render(request,"Registro.html",context)
 
 def enviar_noti(request):
+    
     cate_all = Categoria.objects.all()
-    context = {"categorias": cate_all}
-    if request.POST:
+    context = {"categorias": cate_all,"flag":False}
+    if User.is_authenticated:
+        nombre_us = request.user.username
+        context = {"categorias":categoria,"usuario":nombre_us,"flag":True}
+        return render(request,"Agregar_noticia.html",context)
+    elif request.POST:
         titulo = request.POST.get("txttitulo")
         redacta = request.POST.get("txtnoticia")
         img = request.FILES.get("img_noti")
@@ -102,4 +135,6 @@ def enviar_noti(request):
             categoria = obj_cate
         )
         noti.save()
-    return render(request,"Agregar_noticia.html",context)
+        return render(request,"Agregar_noticia.html",context)
+    
+    

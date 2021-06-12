@@ -10,18 +10,22 @@
                         <div class="col-12 user-img">
                             <img src="{% static 'img/background/avatarregistro2.png'%}" />
                         </div>
-                        <form class="col-12">
-                            <div class="form-group" id="user-group">
-                                <input type="text" class="form-control" placeholder="Nombre Usuario" id="for-input" />
+                        <form class="col-12" method="POST" action="{% url 'ingresar' %}">
+                            {% csrf_token %}
+                            <div class="form-group" >
+                                <input type="text" class="form-control" placeholder="Nombre Usuario" name="name_user" />
                             </div>
-                            <div class="form-group" id="contrasena-group">
-                                <input type="password" class="form-control" placeholder="Contrasena" id="for-input" />
+                            <div class="form-group">
+                                <input type="password" class="form-control" placeholder="Contrasena" name="pass_user" />
                             </div>
                             <button type="submit" class="btn btn-primary"><i id="boton"
                                     class="fas fa-sign-in-alt"></i> Ingresar</button>
                         </form>
                         <div class="col-12 forgot">
                             <a href="#">Recordar Contrasena</a>
+                            <p>{{mensaje}}</p>
+                            <p>{{nombre}}</p>
+                            <p>{{us_auth}}</p>
                         </div>
                     </div>
                 </div>
