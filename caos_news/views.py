@@ -22,6 +22,16 @@ def index(request):
         contexto = {"categorias":categoria,"noticias":noti_all,"noticias_index":noti_index,"nombre":nombre}
         return render(request,"index.html",contexto)
 
+def filtro_busqueda(request):
+    categoria = Categoria.objects.all()
+    noti_all = Noticia.objects.all()
+    if request.POST:
+        busqueda = request.POST.get("txtbusqueda")
+        noti_all = Noticia.objects.filter(publicar=True,nombre_not__contains=busqueda)
+        cantidad = Noticia.objects.filter(publicar=True,nombre_not__contains=busqueda).count()
+    contexto = {"categorias":categoria,"noticias":noti_all,"cantidad":cantidad}
+    return render(request, 'index.html',contexto)
+
 def categoria(request,id):
     cate_all = Categoria.objects.all()
     cate = Categoria.objects.get(nombre_catg=id)
@@ -119,7 +129,7 @@ def enviar_noti(request):
     context = {"categorias": cate_all,"flag":False}
     if User.is_authenticated:
         nombre_us = request.user.username
-        context = {"categorias":categoria,"usuario":nombre_us,"flag":True}
+        context = {"categorias":categoria,"nombre":nombre_us,"flag":True}
         return render(request,"Agregar_noticia.html",context)
     elif request.POST:
         titulo = request.POST.get("txttitulo")
