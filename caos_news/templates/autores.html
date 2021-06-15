@@ -5,52 +5,64 @@
 {% endblock titulo %}
 {% block link_activos %}
     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-    <li class="nav-item">
-        <a class="nav-link" aria-current="page" href="{% url 'index'%}">Inicio</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="{% url 'nos' %}">Nosotros</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="{% url 'contac' %}">Contactanos</a>
-    </li>
-    <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle active" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
-            aria-expanded="false">
-            Noticias
-        </a>
-        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li>
-                <h6 class="dropdown-header">Por Categoria</h6>
+        <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{% url 'index'%}">Inicio</a>
+        </li>
+        {% if user.is_authenticated %}
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'enviar_n' %}">Subir noticia</a>
             </li>
-            {% for x in categorias %}
-                <li><a class="dropdown-item" href="{% url 'categ' x.nombre_catg %}">{{x.nombre_catg}}</a></li>
-            {% endfor %} 
-            <li>
-                <hr class="dropdown-divider">
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'mis_notis' %}">Mis Noticias</a>
             </li>
-            <li><a class="dropdown-item" href="{% url 'autores' %}">Por Autor</a></li>
-        </ul>
-    </li>
+        {% else %}
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'nos' %}">Nosotros</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'contac' %}">Contactanos</a>
+            </li>
+        {% endif %} 
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Noticias
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <li>
+                        <h6 class="dropdown-header">Por Categoria</h6>
+                    </li>
+                        {% for x in categorias %}
+                            <li><a class="dropdown-item" href="{% url 'categ' x.nombre_catg %}">{{x.nombre_catg}}</a></li>
+                        {% endfor %}                          
+                    <li>
+                    <hr class="dropdown-divider">
+                    </li>
+                        <li><a class="dropdown-item" href="{% url 'autores'%}">Por Autor</a></li>                         
+                </ul>
+            </li>
 {% endblock link_activos %}
    <!--Miembros-->
 {% block contenido%}
     <section class="container-fluid">
-        <div class="row ms-5">
+        <div class="row ms-5 p-5">
             <div class="d-block text-center mt-4">
-                <h2 style="margin-bottom: 50px;">AUTORES</h2>
+                <h2 style="margin-bottom: 50px;">Nuestros Autores</h2>
             </div>
             <div class="row justify-content-center">
-            {% for item in noticias %}
+            {% for item in users %}
                 <div id="tarjeta" class="card me-auto mt-4" style="width: 18rem; border-radius: 15px;">
                     <img src="{% static 'img/team/fem-01.jpg' %}" class="card-img-top" alt="...">
                     <div class="card-body">
-                        <p id="texto-tarj" class="card-text">{{item.autor}}</p>
+                        <p id="texto-tarj" class="card-text" style="text-align: center;" >{{item.username}}</p>
                     </div>
                 </div>
             {% endfor %}
-            </div>
-           
+            </div>          
         </div>
     </section>
 {% endblock contenido%}
+{% block categorias %}
+    {% for x in categorias %}
+        <li><a href="{% url 'categ' x.nombre_catg %}">{{x.nombre_catg}}</a></li>
+    {% endfor %}                        
+{% endblock categorias %}

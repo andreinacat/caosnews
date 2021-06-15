@@ -15,12 +15,16 @@ def out_session(request):
     return render(request,"index.html",contexto)
 
 def busq_autor(request):
-    users_n = User.objects.all()
-    categoria = Categoria.objects.all()
-    noti_all = Noticia.objects.filter(publicar=True) 
-    context = {"categorias":categoria,"noticias":noti_all}
+    users_n = User.objects.filter(groups=1)
+    categoria = Categoria.objects.all()  
+    context = {"categorias":categoria,"users":users_n}
     return  render(request,"autores.html",context)
+def mis_news(request):
+    categoria = Categoria.objects.all()
+    noti_all = Noticia.objects.all()
 
+    contexto = {"categorias":categoria,"noticias":noti_all}
+    return render(request,"mis_notis.html",contexto)
 def ingresar(request):
     mensaje=""
     if request.POST:
@@ -39,17 +43,11 @@ def ingresar(request):
             mensaje="No existe usuario o contraseña incorrecta."
     contexto={"mensaje":mensaje}
     return render(request,"ingresar.html",contexto)
+
 def index(request):
     categoria = Categoria.objects.all()
     noti_all = Noticia.objects.filter(publicar=True).order_by('-fecha_not')[:3]
     noti_index = Noticia.objects.filter(publicar=True).order_by('-fecha_not')[4:8]
-    
-#     if User.is_authenticated:
-#         nombreu = request.user.username
-#         context = {"categorias":categoria,"noticias":noti_all,"noticias_index":noti_index,"nombre":nombreu,"flag":True}
-#         return render(request,"index.html",context)
-#     else:
-#         nombre =' '
     contexto = {"categorias":categoria,"noticias":noti_all,"noticias_index":noti_index}
     return render(request,"index.html",contexto) 
 
@@ -128,7 +126,7 @@ def registrar(request):
             us.last_name = apell
             us.email = mail 
             us.set_password(pass1)
-            us.is_active(False)
+            us.is_active = False
             us.save()            
     return render(request,"Registro.html",context)
 
@@ -138,7 +136,7 @@ def enviar_noti(request):
     context = {"categorias": cate_all,"flag":False}
     if User.is_authenticated:
         nombre_us = request.user.username
-        context = {"categorias":categoria,"nombre":nombre_us,"flag":True}
+        context = {"categorias":cate_all,"nombre":nombre_us,"flag":True}
         return render(request,"Agregar_noticia.html",context)
     elif request.POST:
         titulo = request.POST.get("txttitulo")
@@ -151,7 +149,8 @@ def enviar_noti(request):
             nombre_not = titulo,
             redac = redacta,
             img_not = img,
-            categoria = obj_cate
+            categoria = obj_cate,
+            autor = request.user.username,
         )
         noti.save()
         return render(request,"Agregar_noticia.html",context)
