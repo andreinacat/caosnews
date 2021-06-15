@@ -14,11 +14,7 @@
     border-radius: 5px;
     position: relative;
 }
-textarea [name = txtcoment]{
-    width: 100%;
-    height: 145px;
-    resize: none;
-}
+
 
 @media (max-width: 768px) {
 

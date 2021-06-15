@@ -15,9 +15,9 @@ def out_session(request):
     return render(request,"index.html",contexto)
 
 def busq_autor(request):
+    users_n = User.objects.all()
     categoria = Categoria.objects.all()
-    noti_all = Noticia.objects.filter(publicar=True)
-    
+    noti_all = Noticia.objects.filter(publicar=True) 
     context = {"categorias":categoria,"noticias":noti_all}
     return  render(request,"autores.html",context)
 
@@ -116,8 +116,7 @@ def registrar(request):
         try:
             us = User.objects.get(username=user)
             mensaje = "Usuario existente."
-            context = {"categorias":categoria,"mensaje":mensaje}
-            
+            context = {"categorias":categoria,"mensaje":mensaje}           
         except:
             nombre = request.POST.get("txtnombre")
             apell = request.POST.get("txtapellido")
@@ -129,6 +128,7 @@ def registrar(request):
             us.last_name = apell
             us.email = mail 
             us.set_password(pass1)
+            us.is_active(False)
             us.save()            
     return render(request,"Registro.html",context)
 

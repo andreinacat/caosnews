@@ -29,7 +29,7 @@
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
-                                <li><a class="dropdown-item" href="Cat_Autor.html">Por Autor</a></li>
+                                <li><a class="dropdown-item" href="{% url 'autores' %}">Por Autor</a></li>
                             </ul>
                         </li>
 {% endblock link_activos %}
@@ -79,7 +79,7 @@
                         <div class="form-group mb-5">
                             <label class="font-weight-bold">Comentarios<span id="com_span"
                                     class="text-danger">*</span></label>
-                            <textarea id="txtcoment" name="txtcoment" class="form-control"
+                            <textarea id="txtcoment" name="txtcoment" class="form-control" style="resize: none; height: 102px; width: 100%;"
                                 placeholder="Dejanos tus Comentarios"></textarea>
                         </div>
                         <div class="text-end">

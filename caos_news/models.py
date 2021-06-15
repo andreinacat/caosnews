@@ -6,7 +6,6 @@ import datetime
 class Categoria(models.Model):   
     cod_catg = models.IntegerField(primary_key=True)
     nombre_catg = models.CharField(max_length=50)
-  
     def __str__(self):
         return self.nombre_catg
 
