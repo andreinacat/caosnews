@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block titulo %}
+<title>Autores - Caos News</title>
+{% endblock titulo %}
+{% block link_activos %}
+    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+    <li class="nav-item">
+        <a class="nav-link" aria-current="page" href="{% url 'index'%}">Inicio</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link active" href="{% url 'nos' %}">Nosotros</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'contac' %}">Contactanos</a>
+    </li>
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+            aria-expanded="false">
+            Noticias
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li>
+                <h6 class="dropdown-header">Por Categoria</h6>
+            </li>
+            {% for x in categorias %}
+                <li><a class="dropdown-item" href="{% url 'categ' x.nombre_catg %}">{{x.nombre_catg}}</a></li>
+            {% endfor %} 
+            <li>
+                <hr class="dropdown-divider">
+            </li>
+            <li><a class="dropdown-item" href="{% url 'autores' %}">Por Autor</a></li>
+        </ul>
+    </li>
+{% endblock link_activos %}
+   <!--Miembros-->
+{% block contenido%}
+    <section class="container-fluid">
+        <div class="row ms-5">
+            <div class="d-block text-center mt-4">
+                <h2 style="margin-bottom: 50px;">AUTORES</h2>
+            </div>
+            <div class="row justify-content-center">
+            {% for item in noticias %}
+                <div id="tarjeta" class="card me-auto mt-4" style="width: 18rem; border-radius: 15px;">
+                    <img src="{% static 'img/team/fem-01.jpg' %}" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <p id="texto-tarj" class="card-text">{{item.autor}}</p>
+                    </div>
+                </div>
+            {% endfor %}
+            </div>
+           
+        </div>
+    </section>
+{% endblock contenido%}

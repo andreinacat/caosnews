@@ -14,6 +14,13 @@ def out_session(request):
     contexto = {"categorias":categorias,"noticias":noti_all,"noticias_index":noti_index}
     return render(request,"index.html",contexto)
 
+def busq_autor(request):
+    categoria = Categoria.objects.all()
+    noti_all = Noticia.objects.filter(publicar=True)
+    
+    context = {"categorias":categoria,"noticias":noti_all}
+    return  render(request,"autores.html",context)
+
 def ingresar(request):
     mensaje=""
     if request.POST:
