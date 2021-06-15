@@ -32,10 +32,7 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     {% block link_activos %}
-                        
-                       
-
-                        
+                                             
                     {% endblock link_activos %}
                     </ul>
                     <hr class="d-xl-none text-white-75">
@@ -72,11 +69,12 @@
                         </li>
                     </ul>
                     <div class="d-grid gap-2 d-md-block my-2 my-xl-0 ms-xl-3">
-                        
-                        <button class="btn" id="boton" type="button"><a href="{% url 'regis' %}">Registrar</a></button>
-                        
-                        <button class="btn" id="boton" itype="button"><a href="{% url 'ingresar'%}">Ingresar</a></button>
-                        
+                        {% if user.is_authenticated %}
+                            <button class="btn" id="boton" type="button"><a href="{% url 'cerrar' %}">Cerrar Sesión</a></button>
+                        {% else %}
+                            <button class="btn" id="boton" type="button"><a href="{% url 'regis' %}">Registrar</a></button>                       
+                            <button class="btn" id="boton" itype="button"><a href="{% url 'ingresar'%}">Ingresar</a></button>
+                        {% endif %}
                     </div>
                 </div>
             </div>

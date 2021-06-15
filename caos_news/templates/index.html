@@ -9,17 +9,21 @@
                         <li class="nav-item">
                             <a class="nav-link active" aria-current="page" href="{% url 'index'%}">Inicio</a>
                         </li>
-                        <li class="nav-item">
+                        {% if user.is_authenticated %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'enviar_n' %}">Subir noticia</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'enviar_n' %}">Mis Noticias</a>
+                            </li>
+                        {% else %}
+                            <li class="nav-item">
                             <a class="nav-link" href="{% url 'nos' %}">Nosotros</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'contac' %}">Contactanos</a>
                         </li>
-                        {% if flag == true %}
-                            <li class="nav-item">
-                                <a class="nav-link" href="{% url 'enviar_n' %}">Subir noticia</a>
-                            </li>
-                        {% endif %} 
+ 
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                                 data-bs-toggle="dropdown" aria-expanded="false">
@@ -36,14 +40,10 @@
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
-                                <li><a class="dropdown-item" href="Cat_Autor.html">Por Autor</a></li>
-                                {% if flag == true %}
-                                    <li><a class="dropdown-item" href="{% url 'enviar_n' %}">enviar_noti</a></li>
-                                {% else %}
-                                    <li><a class="dropdown-item">empty</a></li>
-                                {% endif %} 
+                                <li><a class="dropdown-item" href="Cat_Autor.html">Por Autor</a></li>                         
                             </ul>
                         </li>
+                        {% endif %} 
 {% endblock link_activos %}
 {% block contenido %}
 <main>
@@ -51,10 +51,10 @@
         <nav class="navbar sticky-top" id="barra-busqueda">
             <div class="container-fluid ">
                 <span class="navbar-text">
-                {% if flag == true %}
-                    <h4> Bienvenido(a) {{nombre}} </h4>
+                {% if user.is_authenticated %}
+                    <h4> Bienvenido(a) {{user.first_name}} {{user.last_name}} </h4>
                 {% else %}
-                    <h4>Bienvenido(a)</h4>
+                    <h4>Noticas Frescas</h4>
                 {% endif %} 
                 </span>
                 <form class="d-flex" method="POST" action="{% url 'filter_d'%}">
@@ -113,7 +113,7 @@
                     Lo sentimos no encontramos nada
                 </div>
             {%endif%} 
-                {% for item in noticias %}
+                {% for item in noticias_index %}
                 <div class="p-2 bg-light border shadow mb-3 bg-body rounded" id="tarjeta">
                     <div class="float-start">
                         <img src="{{ item.img_not.url}}" class="m-3 rounded-3" alt="..."
