@@ -1,6 +1,6 @@
 from django.db import models
 import datetime
-
+from django.contrib.auth.models import User
 
 # Create your models here.
 class Categoria(models.Model):   
@@ -15,7 +15,7 @@ class Noticia(models.Model):
     redac =  models.TextField()
     img_not = models.ImageField(upload_to='noticias',null=True)
     publicar = models.BooleanField(default=False)
-    autor = models.CharField(null=True,max_length=25)
+    autor = models.ForeignKey(User,null=True, on_delete=models.CASCADE)
     categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE)
 
     def __str__(self):
