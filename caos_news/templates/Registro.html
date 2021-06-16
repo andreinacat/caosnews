@@ -75,7 +75,8 @@
                                 Facebook
                             </button>
                         </div>
-                        <form class="m-2" action="{% url 'regis' %}" name="registro" method="POST">
+                        <form class="m-2" action="{% url 'regis' %}" name="registro" method="POST" 
+                            onsubmit="return validar_reg(event)">
                             {% csrf_token %}
                             <label class="form-text mb-5 ms-2">Ingresa la siguiente información para
                                 registrarte:</label>
@@ -138,12 +139,12 @@
                             </div>
                             <div class="text-end">
                                 <button class="btn btn-outline width-100 mb-2" id="boton" type="reset">Limpiar</button>
-                                <button class="btn btn-outline width-100 mb-2" id="boton" type="submit"
-                                    onclick="validar_reg()">Regístrate</button>
+                                <button class="btn btn-outline width-100 mb-2" id="boton"
+                                    type="submit">Regístrate</button>
                             </div>
                             <script>
-                                /*Validacion Formulario de Registro*/
-                                function validar_reg() {
+                                function validar_reg(e) {
+                                    e.preventDefault();
                                     var ru = validar_usuario();
                                     var rn = validar_nombre();
                                     var ra = validar_apellido();
@@ -151,19 +152,30 @@
                                     var rp = validar_pass();
                                     var rchk = validar_check();
                                     if (rchk == true) {
-                                        if (ru == true && rn == true && ra == true && re == true && rp == true) {
+                                        if (true) {
                                             Swal.fire({
-                                                icon: 'success',
-                                                title: "Cuenta creada con exito"
+                                                title: 'Do you want to save the changes?',
+                                                showDenyButton: true,
+                                                showCancelButton: true,
+                                                confirmButtonText: `Save`,
+                                                denyButtonText: `Don't save`,
+                                            }).then((result) => {
+                                                if (result.isConfirmed) {
+                                                    document.registro.submit();
+                                                    return true;
+                                                } else if (result.isDenied) {
+                                                    Swal.fire('Changes are not saved', '', 'info')
+                                                }
                                             })
-                                            return true;
                                         }
-                                        Swal.fire({
-                                            icon: 'error',
-                                            title: 'Formulario Con Errores!!!',
-                                            text: 'Favor de revisar los formatos establecidos.'
-                                        })
-                                        return false;
+                                        else {
+                                            Swal.fire({
+                                                icon: 'error',
+                                                title: 'Formulario Con Errores!!!',
+                                                text: 'Favor de revisar los formatos establecidos.'
+                                            })
+                                            return false;
+                                        }
                                     }
                                 }
                             </script>

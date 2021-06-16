@@ -1,28 +1,10 @@
-/*Validacion Formulario de Contacto*/
-function va_formulario() {
-    var rn = validar_nombre();
-    var ra = validar_apellido();
-    var re = validar_email();
-    var rc = validar_comentario();
-    if (rn == true && ra == true && re == true && rc == true) {
-        alert("Comentario Enviado!!!")
-        return true;
-    }
-    Swal.fire({
-        icon: 'error',
-        title: 'Error!!!',
-        text: 'Al envia el formulario.'
-    })
-    return false;
-}
-
 /*Validacion Formulario de envio de noticias*/
 function validar_noticia() {
     var rn = validar_nombre();
     var rc = validar_categoria();
     var rf = validar_file();
     var rt = validar_txt();
-    if (rn == true && rc == true  && rt == true) {
+    if (rn == true && rc == true && rt == true) {
         alert('Noticia Enviada')
         return true;
     } else {
@@ -34,7 +16,7 @@ function validar_usuario(){
     var user = document.getElementById('txtuser').value;
     if(!user.match(/^[A-Za-z0-9]+$/)) {
         document.getElementById('user_span').innerText = "* Formato invalido."
-        document.getElementById('txtuser').focus();
+        document.getElementById('txtuser').focus(); ;
         return false;
     }
     document.getElementById('user_span').innerText = "*"

@@ -71,7 +71,7 @@
                 <div class="col-md-5">
                     <address>DuocUc Sede Puente Alto Area Periodismo</address>
                     {% if user.is_authenticated %}
-                    <p>Email: {{nombre}}@email.com</p>
+                    <p>Email: {{user.email}}</p>
                     {% endif %}
                     <img src="{% static 'img/background/Formulario-Noticias_01.jpg' %}" class="img-thumbnail mt-4"
                         alt="">
@@ -80,13 +80,6 @@
                     <form action="{% url 'enviar_n' %}" method="POST" enctype="multipart/form-data" onsubmit="return validar_noticia()">
                         {% csrf_token %}
                         <div class="form-row mb-1">
-                            <div class="form-group col-md-10">
-                                <label class="font-weight-bold">Autor<span id="nombre_span"
-                                        class="text-danger">*</span></label>
-                                <input id="txtnombre" type="text" class="form-control" id="for-input" name="txtname"
-                                    placeholder="{{nombre}}" oninput="validar_nombre()" required pattern="[A-Za-z]+{3,25}"
-                                    minlength="3" maxlength="25">
-                            </div>
                             <div class="form-group col-md-10">
                                 <label for="formFileMultiple" class="form-label">Sube tus Imágenes<span id="img_span1"
                                         class="text-danger">*</span></label>
@@ -118,25 +111,24 @@
                                 oninput="validar_txt()" required></textarea>
                         </div>
                         <div class="text-end">
-                            <button class="btn btn-outline width-100 col-btn-sm mb-1" type="" id="boton"
-                                onclick="esconder()">galeria</button>
+                                {% comment %} <button class="btn btn-outline width-100 col-btn-sm mb-1" type="" id="boton"
+                                onclick="esconder()">galeria</button> {% endcomment %}
                             <button class="btn btn-outline width-100 col-btn-sm mb-1" type="reset"
                                 id="boton">Limpiar</button>
                             <button class="btn btn-outline width-100 col-btn-sm mb-1" type="submit"
                                 id="boton">Enviar</button>
                         </div>
                     </form>
-                </div>
-                <div id="gale" class="row-3"
-                    style="margin-top: 30px; background-color: rgb(103, 123, 160); border-width: 20px; border-radius: 10px; border-color: darkblue;"
-                    hidden=true>
-                    <img id="output1" width="200" height="200" />
-                    <img id="output2" width="200" height="200" />
-                    <img id="output1" width="200" height="200" />
-                    <img id="output2" width="200" height="200" />
-
-                </div>
-            </div>
+                    {% comment %}   
+                    </div>
+                        <div id="gale" class="row-3"
+                        style="margin-top: 30px; background-color: rgb(103, 123, 160); border-width: 20px; border-radius: 10px; border-color: darkblue;"
+                        hidden=true>
+                            <img id="output1" width="200" height="200" />
+                            <img id="output2" width="200" height="200" />
+                            <img id="output1" width="200" height="200" />
+                            <img id="output2" width="200" height="200" />
+                    </div> {% endcomment %} 
         </div>
     </section>
 {% endblock contenido %}

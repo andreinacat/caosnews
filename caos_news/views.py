@@ -5,6 +5,7 @@ from .models import Categoria,Noticia,Comentarios
 from django.contrib.auth import authenticate,logout,login
 from django.contrib.auth.decorators import login_required
 
+
 # Create your views here.
 def out_session(request):
     logout(request)
@@ -13,18 +14,19 @@ def out_session(request):
     noti_index = Noticia.objects.filter(publicar=True).order_by('-fecha_not')[4:8]
     contexto = {"categorias":categorias,"noticias":noti_all,"noticias_index":noti_index}
     return render(request,"index.html",contexto)
-
+########################################################################################################################
 def busq_autor(request):
     users_n = User.objects.filter(groups=1)
     categoria = Categoria.objects.all()  
     context = {"categorias":categoria,"users":users_n}
     return  render(request,"autores.html",context)
+@login_required(login_url='/Ingresar/')
 def mis_news(request):
     categoria = Categoria.objects.all()
     noti_all = Noticia.objects.all()
-
     contexto = {"categorias":categoria,"noticias":noti_all}
     return render(request,"mis_notis.html",contexto)
+########################################################################################################################
 def ingresar(request):
     mensaje=""
     if request.POST:
@@ -43,14 +45,14 @@ def ingresar(request):
             mensaje="No existe usuario o contraseña incorrecta."
     contexto={"mensaje":mensaje}
     return render(request,"ingresar.html",contexto)
-
+########################################################################################################################
 def index(request):
-    categoria = Categoria.objects.all()
+    categoria = Categoria.objects.all()  
     noti_all = Noticia.objects.filter(publicar=True).order_by('-fecha_not')[:3]
     noti_index = Noticia.objects.filter(publicar=True).order_by('-fecha_not')[4:8]
     contexto = {"categorias":categoria,"noticias":noti_all,"noticias_index":noti_index}
     return render(request,"index.html",contexto) 
-
+########################################################################################################################
 def filtro_busqueda(request):
     categoria = Categoria.objects.all()
     noti_all = Noticia.objects.all()
@@ -60,14 +62,14 @@ def filtro_busqueda(request):
         cantidad = Noticia.objects.filter(publicar=True,nombre_not__contains=busqueda).count()
     contexto = {"categorias":categoria,"noticias":noti_all,"cantidad":cantidad}
     return render(request, 'index.html',contexto)
-
+########################################################################################################################
 def categoria(request,id):
     cate_all = Categoria.objects.all()
     cate = Categoria.objects.get(nombre_catg=id)
     noti = Noticia.objects.filter(categoria=cate,publicar=True).order_by('-fecha_not') 
     context = {"cate":cate,"cate_all":cate_all,"noti_all":noti}
     return render(request,"Categoria.html",context)
-
+########################################################################################################################
 def noticias(request,id):
     categoria = Categoria.objects.all()
     try:
@@ -77,9 +79,7 @@ def noticias(request,id):
     except:
         context ={"noticia":"No existe esa Noticia","categorias":categoria}
         return render(request,"Noticia.html",context)
-
-
-####SOLO FALTA FILTRO POR BUSQUEDA################
+########################################################################################################################
 def contactanos(request):
     categoria = Categoria.objects.all()
     context = {"categorias":categoria}
@@ -97,15 +97,15 @@ def contactanos(request):
         )
         come.save()
     return  render(request,"Contacto.html",context)
-    
+########################################################################################################################   
 def galeria(request):
     return render(request,"galeria.html")
-####SOLO FALTA FILTRO POR BUSQUEDA################
+########################################################################################################################
 def nosotros(request):
     categoria = Categoria.objects.all()
     context = {"categorias":categoria}
     return render(request,"Nosotros.html",context)
-####SOLO FALTA FILTRO POR BUSQUEDA################
+########################################################################################################################
 def registrar(request):
     categoria = Categoria.objects.all()
     context = {"categorias":categoria}
@@ -129,9 +129,9 @@ def registrar(request):
             us.is_active = False
             us.save()            
     return render(request,"Registro.html",context)
-
-def enviar_noti(request):
-    
+########################################################################################################################
+@login_required(login_url='/Ingresar/')
+def enviar_noti(request): 
     cate_all = Categoria.objects.all()
     context = {"categorias": cate_all,"flag":False}
     if User.is_authenticated:

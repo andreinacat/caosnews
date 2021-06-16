@@ -1,41 +1,43 @@
+
+<!--pagina TERMINADA-->
 {% extends 'base.html' %}
 {% load static %}
 {% block titulo %}
 <title>Contacto - Caos News</title>
 {% endblock titulo %}
 {% block link_activos %}
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item">
-                            <a class="nav-link" aria-current="page" href="{% url 'index'%}">Inicio</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'nos' %}">Nosotros</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link active" href="{% url 'contac' %}">Contactanos</a>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                                data-bs-toggle="dropdown" aria-expanded="false">
-                                Noticias
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li>
-                                    <h6 class="dropdown-header">Por Categoria</h6>
-                                </li>
-                                {% for x in categorias %}
-                                    <li><a class="dropdown-item" href="{% url 'categ' x.nombre_catg %}">{{x.nombre_catg}}</a></li>
-                                {% endfor %} 
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>
-                                <li><a class="dropdown-item" href="{% url 'autores' %}">Por Autor</a></li>
-                            </ul>
-                        </li>
-{% endblock link_activos %}
+<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+    <li class="nav-item">
+        <a class="nav-link" aria-current="page" href="{% url 'index'%}">Inicio</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'nos' %}">Nosotros</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link active" href="{% url 'contac' %}">Contactanos</a>
+    </li>
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+            aria-expanded="false">
+            Noticias
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li>
+                <h6 class="dropdown-header">Por Categoria</h6>
+            </li>
+            {% for x in categorias %}
+            <li><a class="dropdown-item" href="{% url 'categ' x.nombre_catg %}">{{x.nombre_catg}}</a></li>
+            {% endfor %}
+            <li>
+                <hr class="dropdown-divider">
+            </li>
+            <li><a class="dropdown-item" href="{% url 'autores' %}">Por Autor</a></li>
+        </ul>
+    </li>
+    {% endblock link_activos %}
 
-{% block contenido %}
-<main>
+    {% block contenido %}
+    <main>
         <!--Barra de busqueda-->
         <nav class="navbar sticky-top" id="barra-busqueda">
             <div class="container-fluid ">
@@ -48,52 +50,86 @@
                 </form>
             </div>
         </nav>
-        <!--Formulario Contacto-->       
+        <!--Formulario Contacto-->
         <!--Enviar hacia la DB por NAME no po ID-->
         <section class="container-fluid bg-contacto">
             <div class="container-fluid animate__animated animate__fadeInLeft">
                 <div class="form-contact">
                     <h2>Contactanos</h2>
-                    <form action="{% url 'contac' %}" method="POST" onsubmit="return va_formulario()">                    
+                    <form action="{% url 'contac' %}" method="POST" name="contacto"
+                        onsubmit="return va_formulario(event)">
                         {% csrf_token %}
                         <div class="form-row mb-2">
                             <div class="form-group col-md-6">
                                 <label class="font-weight-bold">Nombre <span id="nombre_span"
                                         class="text-danger">*</span></label>
-                                <input id="txtnombre" name="txtnombre" type="text" class="form-control" placeholder="Tu nombre"
-                                   oninput="validar_nombre()" minlength="3" maxlength="25" pattern="[A-Za-z]+" required>
+                                <input id="txtnombre" name="txtnombre" type="text" class="form-control"
+                                    placeholder="Tu nombre" oninput="validar_nombre()" minlength="3" maxlength="25"
+                                    pattern="[A-Za-z]+" required>
                             </div>
                             <div class="form-group col-md-6">
                                 <label class="font-weight-bold">Apellido <span id="apellido_span"
                                         class="text-danger">*</span></label>
-                                <input id="txtapellido" name="txtapellido" type="text" class="form-control" placeholder="Tu apellido"
-                                    oninput="validar_apellido()"minlength="3"  maxlength="25" pattern="[A-Za-z]+" required>
+                                <input id="txtapellido" name="txtapellido" type="text" class="form-control"
+                                    placeholder="Tu apellido" oninput="validar_apellido()" minlength="3" maxlength="25"
+                                    pattern="[A-Za-z]+" required>
                             </div>
                         </div>
                         <div class="form-group mb-3">
                             <label class="font-weight-bold">Correo electrónico <span id="mail_span"
                                     class="text-danger">*</span></label>
                             <input id="txtmail" name="txtmail" type="email" class="form-control"
-                                placeholder="Ejemplo@ejemplo.cl" oninput="validar_email()" required >
+                                placeholder="Ejemplo@ejemplo.cl" oninput="validar_email()" required>
                         </div>
                         <div class="form-group mb-5">
                             <label class="font-weight-bold">Comentarios<span id="com_span"
                                     class="text-danger">*</span></label>
-                            <textarea id="txtcoment" name="txtcoment" class="form-control" style="resize: none; height: 102px; width: 100%;"
+                            <textarea id="txtcoment" name="txtcoment" class="form-control"
+                                style="resize: none; height: 102px; width: 100%;"
                                 placeholder="Dejanos tus Comentarios"></textarea>
                         </div>
                         <div class="text-end">
-                            <button class="btn btn-outline width-100 col-btn-sm mb-1" type="reset" id="boton">Limpiar</button>
-                            <button class="btn btn-outline width-100 col-btn-sm mb-1" type="submit" id="boton">Enviar</button>
+                            <button class="btn btn-outline width-100 col-btn-sm mb-1" type="reset"
+                                id="boton">Limpiar</button>
+                            <button class="btn btn-outline width-100 col-btn-sm mb-1" type="submit"
+                                id="boton">Enviar</button>
                         </div>
                     </form>
+                    <script>
+                        /*Validacion Formulario de Contacto*/
+                        function va_formulario(e) {
+                            e.preventDefault();
+                            var rn = validar_nombre();
+                            var ra = validar_apellido();
+                            var re = validar_email();
+                            var rc = validar_comentario();
+                            if (rn == true && ra == true && re == true && rc == true) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Exito',
+                                    text: 'Tu comentario ha sido enviado!!',
+                                    showConfirmButton: true,
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        document.contacto.submit();
+                                        return true;
+                                    }
+                                })
+                            }else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Formulario Con Errores!!!',
+                                    text: 'Favor de revisar los formatos establecidos.'
+                                })
+                                return false;
+                            }}                          
+                    </script>
                 </div>
             </div>
         </section>
-{% endblock contenido %}
-{% block categorias %}
+        {% endblock contenido %}
+        {% block categorias %}
     {% for x in categorias %}
-        <li><a href="{% url 'categ' x.nombre_catg %}">{{x.nombre_catg}}</a></li>
-    {% endfor %}                        
-{% endblock categorias %}
-
+        <li><a href="{% url 'categ' x.nombre_catg %}"> {{x.nombre_catg}}</a></li>
+        {% endfor %}
+    {% endblock categorias %}

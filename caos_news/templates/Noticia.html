@@ -127,10 +127,10 @@
                 </div>
             </div>
         </section>
-        <section>
-            <div>{{noticia}}</div>
-        </section>
     </main>
-
-
     {% endblock contenido %}
+    {% block categorias %}
+    {% for x in categorias %}
+        <li><a href="{% url 'categ' x.nombre_catg %}">{{x.nombre_catg}}</a></li>
+    {% endfor %}                        
+{% endblock categorias %}

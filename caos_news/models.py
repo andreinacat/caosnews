@@ -1,3 +1,4 @@
+
 from django.db import models
 import datetime
 from django.contrib.auth.models import User
@@ -15,6 +16,7 @@ class Noticia(models.Model):
     redac =  models.TextField()
     img_not = models.ImageField(upload_to='noticias',null=True)
     publicar = models.BooleanField(default=False)
+    comentario = models.TextField(null=True,default='Sin observaciones')
     autor = models.ForeignKey(User,null=True, on_delete=models.CASCADE)
     categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE)
 
@@ -28,3 +30,10 @@ class Comentarios(models.Model):
     coment = models.TextField()
     def __str__(self):
         return (str(self.cod_coment) + " - " + self.mail_c)
+
+class Galeria(models.Model):
+    cod_img = models.AutoField(primary_key=True)
+    imagen = models.ImageField(upload_to='galeria',null=True)
+    not_gal = models.ForeignKey(Noticia, null=True, on_delete=models.CASCADE)
+    def __str__(self):
+        return (str(self.cod_img) + " - " + self.not_gal)
