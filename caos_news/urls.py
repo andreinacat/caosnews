@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path
-from .views import index,galeria,contactanos,noticias,nosotros,registrar,enviar_noti,categoria,ingresar,filtro_busqueda,out_session,busq_autor,mis_news
+from .views import modificar,b_modificar,index,galeria,contactanos,noticias,nosotros,registrar,enviar_noti,categoria,ingresar,filtro_busqueda,out_session,busq_autor,mis_news
 
 urlpatterns = [   
     path('',index,name="index"),
@@ -16,4 +16,6 @@ urlpatterns = [
     path('salir/',out_session,name='cerrar'),
     path('autores/',busq_autor,name='autores'),
     path('mis_noticias/',mis_news,name='mis_notis'),
+    path('modificar/<id>/',b_modificar,name='modi'),
+    path('modificar_t/',modificar,name='modif')
 ]

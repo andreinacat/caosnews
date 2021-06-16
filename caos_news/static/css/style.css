@@ -79,3 +79,8 @@ section table #boton {
     font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
     color: whitesmoke;
 }
+.celda{
+    max-width: 100px;
+    overflow-y: hidden;
+    max-height: 50px;
+}

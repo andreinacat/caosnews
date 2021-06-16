@@ -75,7 +75,7 @@
                                 Facebook
                             </button>
                         </div>
-                        <form class="m-2" action="{% url 'regis' %}" name="registro" method="POST" 
+                        <form class="m-2" action="{% url 'regis' %}" name="registro" method="POST"
                             onsubmit="return validar_reg(event)">
                             {% csrf_token %}
                             <label class="form-text mb-5 ms-2">Ingresa la siguiente información para
@@ -152,19 +152,17 @@
                                     var rp = validar_pass();
                                     var rchk = validar_check();
                                     if (rchk == true) {
-                                        if (true) {
+                                        if (ru == true && rn == true && ra == true && re == true && rp == true) {
                                             Swal.fire({
-                                                title: 'Do you want to save the changes?',
-                                                showDenyButton: true,
-                                                showCancelButton: true,
-                                                confirmButtonText: `Save`,
-                                                denyButtonText: `Don't save`,
+                                                icon: 'success',
+                                                title: 'Exito',
+                                                text: 'Tu Cuenta ha sido Creada',
+                                                footer:'Debes esperar a que el administrador habilite tu cuenta.',
+                                                showConfirmButton: true,
                                             }).then((result) => {
                                                 if (result.isConfirmed) {
                                                     document.registro.submit();
                                                     return true;
-                                                } else if (result.isDenied) {
-                                                    Swal.fire('Changes are not saved', '', 'info')
                                                 }
                                             })
                                         }

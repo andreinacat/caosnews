@@ -1,141 +1,163 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block titulo %}
-<title>Registro - Caos News</title>
+<title>Enviar Noticias - Caos News</title>
 {% endblock titulo %}
 {% block link_activos %}
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item">
-                            <a class="nav-link" aria-current="page" href="{% url 'index'%}">Inicio</a>
-                        </li>
-                        {% if user.is_authenticated %}
-                            <li class="nav-item ">
-                                <a class="nav-link active" href="{% url 'enviar_n' %}">Subir noticia</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{% url 'mis_notis' %}">Mis Noticias</a>
-                            </li>
-                        {% else %}
-                            <li class="nav-item">
-                            <a class="nav-link" href="{% url 'nos' %}">Nosotros</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'contac' %}">Contactanos</a>
-                        </li>
-                        {% endif %} 
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                                data-bs-toggle="dropdown" aria-expanded="false">
-                                Noticias
-                            </a>
+<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+    <li class="nav-item">
+        <a class="nav-link" aria-current="page" href="{% url 'index'%}">Inicio</a>
+    </li>
+    {% if user.is_authenticated %}
+    <li class="nav-item ">
+        <a class="nav-link active" href="{% url 'enviar_n' %}">Subir noticia</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'mis_notis' %}">Mis Noticias</a>
+    </li>
+    {% else %}
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'nos' %}">Nosotros</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'contac' %}">Contactanos</a>
+    </li>
+    {% endif %}
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+            aria-expanded="false">
+            Noticias
+        </a>
 
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li>
-                                    <h6 class="dropdown-header">Por Categoria</h6>
-                                </li>
-                                    {% for x in categorias %}
-                                        <li><a class="dropdown-item" href="{% url 'categ' x.nombre_catg %}">{{x.nombre_catg}}</a></li>
-                                    {% endfor %}                          
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>
-                                <li><a class="dropdown-item" href="{% url 'autores' %}">Por Autor</a></li>                         
-                            </ul>
-                        </li>
-                         
-{% endblock link_activos %}
-{% block contenido %}
-<main>
+        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li>
+                <h6 class="dropdown-header">Por Categoria</h6>
+            </li>
+            {% for x in categorias %}
+            <li><a class="dropdown-item" href="{% url 'categ' x.nombre_catg %}">{{x.nombre_catg}}</a></li>
+            {% endfor %}
+            <li>
+                <hr class="dropdown-divider">
+            </li>
+            <li><a class="dropdown-item" href="{% url 'autores' %}">Por Autor</a></li>
+        </ul>
+    </li>
+
+    {% endblock link_activos %}
+    {% block contenido %}
+    <main>
         <!--Barra de busqueda-->
         <nav class="navbar sticky-top" id="barra-busqueda">
             <div class="container-fluid ">
                 <span class="navbar-text">
-                {% if user.is_authenticated %}
+                    {% if user.is_authenticated %}
                     <h4> Bienvenido(a) {{user.first_name}} {{user.last_name}} </h4>
-                {% else %}
+                    {% else %}
                     <h4>Noticas Frescas</h4>
-                {% endif %} 
+                    {% endif %}
                 </span>
                 <form class="d-flex" method="POST" action="{% url 'filter_d'%}">
-                {% csrf_token %}
-                    <input class="form-control me-2" type="search" placeholder="Noticias Frescas..." name="txtbusqueda" aria-label="Search">
+                    {% csrf_token %}
+                    <input class="form-control me-2" type="search" placeholder="Noticias Frescas..." name="txtbusqueda"
+                        aria-label="Search">
                     <button id="boton" class="btn btn-outline" type="submit">Buscar</button>
                 </form>
             </div>
         </nav>
-    <section class="container-fluid p-5">
-        <div class="container-fluid p-5 animate__animated animate__fadeInLeft" id="contact-box">
-            <h2>Envia Tu Noticia</h2>
-            <hr class=" my-4">
-            <div class="row form-noti">
-                <div class="col-md-5">
-                    <address>DuocUc Sede Puente Alto Area Periodismo</address>
-                    {% if user.is_authenticated %}
-                    <p>Email: {{user.email}}</p>
-                    {% endif %}
-                    <img src="{% static 'img/background/Formulario-Noticias_01.jpg' %}" class="img-thumbnail mt-4"
-                        alt="">
-                </div>
-                <div class="col-md-7">
-                    <form action="{% url 'enviar_n' %}" method="POST" enctype="multipart/form-data" onsubmit="return validar_noticia()">
-                        {% csrf_token %}
-                        <div class="form-row mb-1">
-                            <div class="form-group col-md-10">
-                                <label for="formFileMultiple" class="form-label">Sube tus Imágenes<span id="img_span1"
-                                        class="text-danger">*</span></label>
-                                <input id="imgfile1" class="form-control" type="file" name="img_noti" accept="image/*" >
-                            </div>
-                        </div>
-                        <div class="form-group" style="width: 84.1%;">
-                            <label class="font-weight-bold">Categoria <span class="text-danger"
-                                    id="categoria_span">*</span></label>
-                            <select id="txtcategoria" name="txtcategoria" class="form-select form-select"
-                                aria-label=".form-select-sm example" onclick="validar_categoria()" required>
-                                <option selected>Selecciona una Categoria</option>
-                                {% for x in categorias %}
-                                <option selected>{{x.nombre_catg}}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                        <div class="form-group col-md-10">
-                            <label class="font-weight-bold">Titulo Noticia <span id="nombre_span"
-                                    class="text-danger">*</span></label>
-                            <input id="txttitulo" type="text" class="form-control" id="for-input" name="txttitulo"
-                                placeholder="Titulo" oninput="validar_nombre()" required pattern="[A-Za-z]+"
-                                minlength="3" maxlength="25">
-                        </div>
-                        <div class="form-group mb-5">
-                            <label class="font-weight-bold">Redacta tu Noticia<span id="noticia_span"
-                                    class="text-danger">*</span></label>
-                            <textarea id="txtnoticia" name="txtnoticia" class="form-control" name="contacto" placeholder="Redacta" style="resize: none; width: 100%; height: 250px;"
-                                oninput="validar_txt()" required></textarea>
-                        </div>
-                        <div class="text-end">
-                                {% comment %} <button class="btn btn-outline width-100 col-btn-sm mb-1" type="" id="boton"
-                                onclick="esconder()">galeria</button> {% endcomment %}
-                            <button class="btn btn-outline width-100 col-btn-sm mb-1" type="reset"
-                                id="boton">Limpiar</button>
-                            <button class="btn btn-outline width-100 col-btn-sm mb-1" type="submit"
-                                id="boton">Enviar</button>
-                        </div>
-                    </form>
-                    {% comment %}   
+        <section class="container-fluid p-5">
+            <div class="container-fluid p-5 animate__animated animate__fadeInLeft" id="contact-box">
+                <h2>Envia Tu Noticia</h2>
+                <hr class=" my-4">
+                <div class="row form-noti">
+                    <div class="col-md-5">
+                        <address>DuocUc Sede Puente Alto Area Periodismo</address>
+                        {% if user.is_authenticated %}
+                        <p>Email: {{user.email}}</p>
+                        {% endif %}
+                        <img src="{% static 'img/background/Formulario-Noticias_01.jpg' %}" class="img-thumbnail mt-4"
+                            alt="">
                     </div>
-                        <div id="gale" class="row-3"
-                        style="margin-top: 30px; background-color: rgb(103, 123, 160); border-width: 20px; border-radius: 10px; border-color: darkblue;"
-                        hidden=true>
-                            <img id="output1" width="200" height="200" />
-                            <img id="output2" width="200" height="200" />
-                            <img id="output1" width="200" height="200" />
-                            <img id="output2" width="200" height="200" />
-                    </div> {% endcomment %} 
-        </div>
-    </section>
-{% endblock contenido %}
+                    <div class="col-md-7">
+                        <form action="{% url 'enviar_n' %}" method="POST" enctype="multipart/form-data"
+                            onsubmit="return validar_noticia(event)" name="enviar_noti">
+                            {% csrf_token %}
+                            <div class="form-group col-md-10">
+                                <label class="font-weight-bold">Titulo Noticia <span id="nombre_span"
+                                        class="text-danger">*</span></label>
+                                <input id="txtnombre" type="text" class="form-control" id="for-input" name="txttitulo"
+                                    placeholder="Titulo" oninput="validar_nombre()" required pattern="[A-Za-z].+"
+                                    minlength="3" maxlength="25">
+                            </div>
+                            <div class="form-row mb-1">
+                                <div class="form-group col-md-10">
+                                    <label for="formFileMultiple" class="form-label">Sube tus Imágenes<span
+                                            id="img_span1" class="text-danger">*</span></label>
+                                    <input id="imgfile1" class="form-control" type="file" name="img_noti"
+                                        accept="image/*" required>
+                                </div>
+                            </div>
+                            <div class="form-group" style="width: 84.1%;">
+                                <label class="font-weight-bold">Categoria <span class="text-danger"
+                                        id="categoria_span">*</span></label>
+                                <select id="txtcategoria" name="txtcategoria" class="form-select form-select"
+                                    aria-label=".form-select-sm example" onclick="validar_categoria()" required>
+                                    <option selected>Selecciona una Categoria</option>
+                                    {% for x in categorias %}
+                                    <option selected>{{x.nombre_catg}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group mb-5">
+                                <label class="font-weight-bold">Redacta tu Noticia<span id="noticia_span"
+                                        class="text-danger">*</span></label>
+                                <textarea id="txtnoticia" name="txtnoticia" class="form-control" name="contacto"
+                                    placeholder="Redacta" style="resize: none; width: 100%; height: 250px;"
+                                    oninput="validar_txt()" required></textarea>
+                            </div>
+                            <div class="text-end">
+                                <button class="btn btn-outline width-100 col-btn-sm mb-1" type="reset"
+                                    id="boton">Limpiar</button>
+                                <button class="btn btn-outline width-100 col-btn-sm mb-1" type="submit" id="boton"
+                                    onclick="validar_file()">Enviar</button>
+                            </div>
+                        </form>
+                    </div>
+        </section>
+        <script>
+            /*Validacion Formulario de envio de noticias*/
+            function validar_noticia(e) {
+                e.preventDefault();
+                var rn = validar_nombre();
+                var rc = validar_categoria();
+                var rf = validar_file();
+                var rt = validar_txt();
+                if (rn == true && rc == true && rt == true && rf == true) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Exito',
+                        text: 'Tu Noticia ha sido enviada!!',
+                        showConfirmButton: true,
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            document.enviar_noti.submit();
+                            return true;
+                        }
+                    })
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Formulario Con Errores!!!',
+                        text: 'Favor de revisar los formatos establecidos.'
+                    })
+                    return false;
+                }
+            }
+        </script>
+        {% endblock contenido %}
 
 
-{% block categorias %}
-    {% for x in categorias %}
+        {% block categorias %}
+        {% for x in categorias %}
         <li><a href="{% url 'categ' x.nombre_catg %}">{{x.nombre_catg}}</a></li>
-    {% endfor %}                        
-{% endblock categorias %}
+        {% endfor %}
+        {% endblock categorias %}

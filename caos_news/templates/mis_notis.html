@@ -57,10 +57,11 @@
                 </span>
                 <span class="navbar-text" style="margin-right: 50%;">
                     <h2>Mis Noticias</h2>
+                    <h6>{{mensaje}}</h6>
                 </span>
             </div>
         </nav>
-        <section class="container-fluid p-5">
+        <section class="container-fluid p-5 table-responsive"  >
             <table class="table table-secundary table-hover">
                 <thead>
                     <tr>
@@ -79,7 +80,7 @@
                         <th scope="row">{{x.nombre_not}}</th>
                         <td>{{x.fecha_not}}</td>
                         <td>{{x.categoria}}</td>
-                        <td>{{x.redac}}</td>
+                        <td class="celda" >{{x.redac}}</td>
                         <td>{{x.comentario}}</td>
                         <td>{% if x.publicar %}
                             <div class="mb-3">
@@ -106,8 +107,8 @@
                             {% endif %}
                         </td>
                         <td>
-                            <button id="boton" type="button" class="btn btn-outline" data-bs-toggle="modal"
-                                data-bs-target="#modificar">
+                            <button id="boton" type="button" class="btn btn-outline"
+                                onclick="modificar('{{x.nombre_not}}')">
                                 Modificar
                             </button>
                         </td>
@@ -115,26 +116,11 @@
                     {% endfor %}
                 </tbody>
             </table>
-            <div class="modal fade" id="modificar" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-                aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="staticBackdropLabel">Modificar Noticia</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <form action="">
-
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary">Understood</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <script>
+                function modificar(name) {
+                    location.href = '/modificar/' + name + '/';
+                }
+            </script>
         </section>
         {% endblock contenido %}
         {% block categorias %}

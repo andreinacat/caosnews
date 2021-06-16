@@ -1,4 +1,5 @@
 from django.contrib import auth
+import datetime
 from django.shortcuts import render
 from django.contrib.auth.models import User
 from .models import Categoria,Noticia,Comentarios
@@ -22,8 +23,9 @@ def busq_autor(request):
     return  render(request,"autores.html",context)
 @login_required(login_url='/Ingresar/')
 def mis_news(request):
+    user = User.objects.get(username=request.user.username)
     categoria = Categoria.objects.all()
-    noti_all = Noticia.objects.all()
+    noti_all = Noticia.objects.filter(autor=user)
     contexto = {"categorias":categoria,"noticias":noti_all}
     return render(request,"mis_notis.html",contexto)
 ########################################################################################################################
@@ -132,27 +134,65 @@ def registrar(request):
 ########################################################################################################################
 @login_required(login_url='/Ingresar/')
 def enviar_noti(request): 
-    cate_all = Categoria.objects.all()
-    context = {"categorias": cate_all,"flag":False}
-    if User.is_authenticated:
-        nombre_us = request.user.username
-        context = {"categorias":cate_all,"nombre":nombre_us,"flag":True}
-        return render(request,"Agregar_noticia.html",context)
-    elif request.POST:
+    mensaje=''
+    if request.POST:
         titulo = request.POST.get("txttitulo")
         redacta = request.POST.get("txtnoticia")
         img = request.FILES.get("img_noti")
         cate = request.POST.get("txtcategoria")
         obj_cate = Categoria.objects.get(nombre_catg=cate)
+        user = User.objects.get(username=request.user.username)
+        try:
+            noti = Noticia.objects.get(nombre_not=titulo)
+            mensaje="El titulo ya Existe!!."
+        except:
+            noti = Noticia(
+                nombre_not = titulo,
+                redac = redacta,
+                img_not = img,
+                categoria = obj_cate,
+                autor = user,
+            )
+            noti.save()
+    cate_all = Categoria.objects.all()
+    contexto = {"categorias": cate_all,"mensaje":mensaje}
+    return render(request,"Agregar_noticia.html",contexto)
 
-        noti = Noticia(
-            nombre_not = titulo,
-            redac = redacta,
-            img_not = img,
-            categoria = obj_cate,
-            autor = request.user.username,
-        )
-        noti.save()
-        return render(request,"Agregar_noticia.html",context)
-    
-    
+@login_required(login_url='/Ingresar/')
+def b_modificar(request,id):
+    try:
+        noti = Noticia.objects.get(nombre_not=id)
+        cate = Categoria.objects.all()
+        context={"noticias":noti,"categorias":cate}
+        return render(request,"modificar.html",context)
+    except:
+        mess= "No se encontro la noticia"
+    cate = Categoria.objects.all()
+    noti = Noticia.objects.all()
+    context={"noticias":noti,"categorias":cate,"mensaje":mess}
+    return render(request,"modificar.html",context)
+
+@login_required(login_url='/Ingresar/')
+def modificar(request):
+    mensaje=''
+    if request.POST:
+        titulo = request.POST.get("titulo")
+        redacta = request.POST.get("txtnoticia")
+        img = request.FILES.get("img_noti")
+        cate = request.POST.get("txtcategoria")
+        obj_cate = Categoria.objects.get(nombre_catg=cate)
+        try:
+            noti = Noticia.objects.get(nombre_not=titulo)
+            noti.redac = redacta
+            noti.categoria= obj_cate
+            if img is not None:
+                noti.img_not = img
+            noti.comentario ='En espera de Revision.'
+            noti.save()
+            mensaje="Noticia modificada con exito!!."
+        except:
+            mensaje="La noticia no pudo ser modificada."
+    cate_all = Categoria.objects.all()
+    noti_all = Noticia.objects.all()
+    contexto={"noticias":noti_all,"categorias":cate_all,"mensaje":mensaje}
+    return render(request,"mis_notis.html",contexto)

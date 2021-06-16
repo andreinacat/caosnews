@@ -1,17 +1,4 @@
-/*Validacion Formulario de envio de noticias*/
-function validar_noticia() {
-    var rn = validar_nombre();
-    var rc = validar_categoria();
-    var rf = validar_file();
-    var rt = validar_txt();
-    if (rn == true && rc == true && rt == true) {
-        alert('Noticia Enviada')
-        return true;
-    } else {
-        alert('Error al ingresar los datos al Formulario')
-        return false;
-    }
-}
+
 function validar_usuario(){
     var user = document.getElementById('txtuser').value;
     if(!user.match(/^[A-Za-z0-9]+$/)) {
@@ -26,7 +13,7 @@ function validar_usuario(){
 
 function validar_nombre() {
     var name = document.getElementById('txtnombre').value;
-    if (!name.match(/^[A-Za-z]+$/)) {
+    if (name.trim().length < 3) {
         document.getElementById('nombre_span').innerText = "* Formato invalido."
         document.getElementById('txtnombre').focus();
         return false;
@@ -36,7 +23,7 @@ function validar_nombre() {
 }
 function validar_apellido() {
     var appel = document.getElementById('txtapellido').value;
-    if (!appel.match(/^[A-Za-z]+$/)) {
+    if (!appel.trim().length < 3) {
         document.getElementById('apellido_span').innerText = "* Formato invalido."
         document.getElementById('txtapellido').focus();
         return false;
@@ -128,15 +115,11 @@ function validar_txt() {
 
 function validar_file() {
     var img1 = document.getElementById('imgfile1').value;
-    var img2 = document.getElementById('imgfile2').value;
-
-    if (img1 == '' || img2 == '') {
-        document.getElementById('img_span1').innerText = "* Faltan por subir imagenes";
-        document.getElementById('img_span2').innerText = "* Faltan por subir imagenes";
+    if (img1 == '') {
+        document.getElementById('img_span1').innerText = "* Falta por subir la imagen.";
         return false;
 
-    } else if ((img2 = !'') && (img1 = ! '')) {
-        document.getElementById('img_span2').innerText = "*";
+    } else if ((img1 = ! '')) {
         document.getElementById('img_span1').innerText = "*";
         return true;
     } else {
@@ -144,17 +127,6 @@ function validar_file() {
     }
 }
 
-function esconder() {
-    var galeria = document.getElementById('gale');
-    if (galeria.hidden == true) {
-        galeria.hidden = false;
-        galeria.className = "animate__animated animate__backInDown"
-    } else if (galeria.hidden == false) {
-        galeria.className = "animate__animated animate__fadeOutUp"
-        galeria.hidden = true;
-
-    }
-}
 function getBase64Image(img) {
 
     var canvas = document.createElement("canvas");
