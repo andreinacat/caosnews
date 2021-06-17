@@ -36,4 +36,4 @@ class Galeria(models.Model):
     imagen = models.ImageField(upload_to='galeria',null=True)
     not_gal = models.ForeignKey(Noticia, null=True, on_delete=models.CASCADE)
     def __str__(self):
-        return (str(self.cod_img) + " - " + self.not_gal)
+        return (str(self.cod_img) + " - " + str(self.not_gal))

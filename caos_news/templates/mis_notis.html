@@ -61,7 +61,7 @@
                 </span>
             </div>
         </nav>
-        <section class="container-fluid p-5 table-responsive"  >
+        <section class="container-fluid p-5 table-responsive">
             <table class="table table-secundary table-hover">
                 <thead>
                     <tr>
@@ -80,7 +80,7 @@
                         <th scope="row">{{x.nombre_not}}</th>
                         <td>{{x.fecha_not}}</td>
                         <td>{{x.categoria}}</td>
-                        <td class="celda" >{{x.redac}}</td>
+                        <td class="celda">{{x.redac}}</td>
                         <td>{{x.comentario}}</td>
                         <td>{% if x.publicar %}
                             <div class="mb-3">
@@ -108,20 +108,56 @@
                         </td>
                         <td>
                             <button id="boton" type="button" class="btn btn-outline"
-                                onclick="modificar('{{x.nombre_not}}')">
-                                Modificar
-                            </button>
+                                onclick="modificar('{{x.nombre_not}}')">Modificar</button>
+                            <button id="boton" type="button" class="btn btn-outline" onclick="gale('{{x.nombre_not}}')"
+                                data-bs-toggle="modal" data-bs-target="#gale_modal">Agregar Imagenes</button>
                         </td>
                     </tr>
                     {% endfor %}
                 </tbody>
             </table>
-            <script>
-                function modificar(name) {
-                    location.href = '/modificar/' + name + '/';
-                }
-            </script>
         </section>
+        <div class="modal fade " id="gale_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered ">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Agregar Imagenes Para: <div id="nombre_noti">
+                            </div>
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form action="{% url 'insert' %}" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="modal-body">
+                            <div class="form-row mb-1">
+                                <div class="form-group col-md-10">
+                                    <label for="formFileMultiple" class="form-label">Sube tu fotografias<span
+                                            id="img_span1" class="text-danger">*</span></label>
+                                    <input id="imgfile1" class="form-control" type="file" name="img_noti"
+                                        accept="image/*" required>
+                                    <input class="form-control" type="hidden" id="txtnoti" name="txtnoti">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            <button type="submit" class="btn btn-primary">Enviar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <script>
+            function gale(nombre) {
+                document.getElementById("nombre_noti").innerHTML = nombre;
+                document.getElementById("txtnoti").value = nombre;
+
+            }
+
+            function modificar(name) {
+                location.href = '/modificar/' + name + '/';
+            }
+        </script>
         {% endblock contenido %}
         {% block categorias %}
         {% for x in categorias %}

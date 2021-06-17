@@ -186,12 +186,12 @@
                             </tr>
                         </thead>
                         <tbody>
-                            
+                            {% for x in autores %}
                             <tr>
-                                <td></td>
+                                <td>{{x.autor}}</td>
                                 <td></td>
                             </tr>
-                           
+                           {% endfor %}
                         </tbody>
                     </table>
                 </div>

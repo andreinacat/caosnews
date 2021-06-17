@@ -1,8 +1,8 @@
 from django.contrib import auth
-import datetime
+from django.db.models import Count
 from django.shortcuts import render
-from django.contrib.auth.models import User
-from .models import Categoria,Noticia,Comentarios
+from django.contrib.auth.models import  User
+from .models import Categoria,Galeria,Noticia,Comentarios
 from django.contrib.auth import authenticate,logout,login
 from django.contrib.auth.decorators import login_required
 
@@ -49,10 +49,12 @@ def ingresar(request):
     return render(request,"ingresar.html",contexto)
 ########################################################################################################################
 def index(request):
+    user = User.objects.filter(groups=1)
+    noti=Noticia.objects.aggregate(Count('autor'))
     categoria = Categoria.objects.all()  
     noti_all = Noticia.objects.filter(publicar=True).order_by('-fecha_not')[:3]
     noti_index = Noticia.objects.filter(publicar=True).order_by('-fecha_not')[4:8]
-    contexto = {"categorias":categoria,"noticias":noti_all,"noticias_index":noti_index}
+    contexto = {"categorias":categoria,"noticias":noti_all,"noticias_index":noti_index,"autores":noti}
     return render(request,"index.html",contexto) 
 ########################################################################################################################
 def filtro_busqueda(request):
@@ -110,7 +112,7 @@ def nosotros(request):
 ########################################################################################################################
 def registrar(request):
     categoria = Categoria.objects.all()
-    context = {"categorias":categoria}
+    contexto = {"categorias":categoria}
     if request.POST:
         user = request.POST.get("txtuser")
         try:
@@ -130,7 +132,7 @@ def registrar(request):
             us.set_password(pass1)
             us.is_active = False
             us.save()            
-    return render(request,"Registro.html",context)
+    return render(request,"Registro.html",contexto)
 ########################################################################################################################
 @login_required(login_url='/Ingresar/')
 def enviar_noti(request): 
@@ -157,7 +159,7 @@ def enviar_noti(request):
     cate_all = Categoria.objects.all()
     contexto = {"categorias": cate_all,"mensaje":mensaje}
     return render(request,"Agregar_noticia.html",contexto)
-
+########################################################################################################################
 @login_required(login_url='/Ingresar/')
 def b_modificar(request,id):
     try:
@@ -171,7 +173,7 @@ def b_modificar(request,id):
     noti = Noticia.objects.all()
     context={"noticias":noti,"categorias":cate,"mensaje":mess}
     return render(request,"modificar.html",context)
-
+########################################################################################################################
 @login_required(login_url='/Ingresar/')
 def modificar(request):
     mensaje=''
@@ -195,4 +197,23 @@ def modificar(request):
     cate_all = Categoria.objects.all()
     noti_all = Noticia.objects.all()
     contexto={"noticias":noti_all,"categorias":cate_all,"mensaje":mensaje}
+    return render(request,"mis_notis.html",contexto)
+########################################################################################################################
+@login_required(login_url='/Ingresar/')
+def insertar_img(request):
+    mensaje=''
+    if request.POST:
+        name_noti = request.POST.get("txtnoti")
+        img_noti = request.FILES.get("img_noti")
+        obj_noti = Noticia.objects.get(nombre_not=name_noti)
+        gale = Galeria(
+            imagen = img_noti,
+            not_gal = obj_noti,
+        )
+        gale.save()
+        mensaje='Imagen insertada con exito.'
+    user = User.objects.get(username=request.user.username)
+    categoria = Categoria.objects.all()
+    noti_all = Noticia.objects.filter(autor=user)
+    contexto = {"categorias":categoria,"noticias":noti_all,"mensaje":mensaje}
     return render(request,"mis_notis.html",contexto)
