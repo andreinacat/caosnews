@@ -9,38 +9,38 @@
         <a class="nav-link" aria-current="page" href="{% url 'index'%}">Inicio</a>
     </li>
     {% if user.is_authenticated %}
-                        <li class="nav-item">
-                                <a class="nav-link" href="{% url 'enviar_n' %}">Subir noticia</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{% url 'mis_notis' %}">Mis Noticias</a>
-                            </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'enviar_n' %}">Subir noticia</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'mis_notis' %}">Mis Noticias</a>
+    </li>
     {% else %}
-                            <li class="nav-item">
-                            <a class="nav-link" href="{% url 'nos' %}">Nosotros</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'contac' %}">Contactanos</a>
-                        </li>
-    {% endif %} 
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                                data-bs-toggle="dropdown" aria-expanded="false">
-                                Noticias
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li>
-                                    <h6 class="dropdown-header">Por Categoria</h6>
-                                </li>
-                                    {% for x in categorias %}
-                                        <li><a class="dropdown-item" href="{% url 'categ' x.nombre_catg %}">{{x.nombre_catg}}</a></li>
-                                    {% endfor %}                          
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>
-                                <li><a class="dropdown-item" href="{% url 'autores'%}">Por Autor</a></li>                         
-                            </ul>
-                        </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'nos' %}">Nosotros</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'contac' %}">Contactanos</a>
+    </li>
+    {% endif %}
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+            aria-expanded="false">
+            Noticias
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li>
+                <h6 class="dropdown-header">Por Categoria</h6>
+            </li>
+            {% for x in categorias %}
+            <li><a class="dropdown-item" href="{% url 'categ' x.nombre_catg %}">{{x.nombre_catg}}</a></li>
+            {% endfor %}
+            <li>
+                <hr class="dropdown-divider">
+            </li>
+            <li><a class="dropdown-item" href="{% url 'autores'%}">Por Autor</a></li>
+        </ul>
+    </li>
     {% endblock link_activos %}
     {% block contenido %}
     <main>
@@ -48,15 +48,16 @@
         <nav class="navbar sticky-top" id="barra-busqueda">
             <div class="container-fluid ">
                 <span class="navbar-text">
-                {% if user.is_authenticated %}
+                    {% if user.is_authenticated %}
                     <h4> Bienvenido(a) {{user.first_name}} {{user.last_name}} </h4>
-                {% else %}
+                    {% else %}
                     <h4>Noticas Frescas</h4>
-                {% endif %} 
+                    {% endif %}
                 </span>
                 <form class="d-flex" method="POST" action="{% url 'filter_d'%}">
-                {% csrf_token %}
-                    <input class="form-control me-2" type="search" placeholder="Noticias Frescas..." name="txtbusqueda" aria-label="Search">
+                    {% csrf_token %}
+                    <input class="form-control me-2" type="search" placeholder="Noticias Frescas..." name="txtbusqueda"
+                        aria-label="Search">
                     <button id="boton" class="btn btn-outline" type="submit">Buscar</button>
                 </form>
             </div>
@@ -90,12 +91,10 @@
                             {{noticia.redac}}
                             {{noticia.redac}}
                         </p>
-                        <a href="{{noticia.img_not.url}}" data-fancybox
-                            data-caption="Autor - Imagen 04">
+                        <a href="{{noticia.img_not.url}}" data-fancybox data-caption="Autor - Imagen 04">
                             <img src="{{noticia.img_not.url}}" alt="" />
                         </a>
-                        <a href="{{noticia.img_not.url}}" data-fancybox
-                            data-caption="Autor - Imagen 01">
+                        <a href="{{noticia.img_not.url}}" data-fancybox data-caption="Autor - Imagen 01">
                             <img src="{{noticia.img_not.url}}" alt="" />
                         </a>
                     </div>
@@ -107,21 +106,20 @@
                     </div>
                 </div>
                 <div class="col-3" id="gal-news1">
-                    <a href="{% static 'img/Galeria-test/img_lights_wide.jpg' %}" data-fancybox="gall-new1"
-                        data-caption="Autor - Imagen 01">
-                        <img src="{% static 'img/Galeria-test/img_lights_wide.jpg' %}" alt="" />
+                    {% for x in galeria %}
+                    <a href="{{x.imagen.url}}" data-fancybox="gall-new1" data-caption="Autor - Imagen {{x.cod_img}}">
+                        <img src="{{x.imagen.url}}" alt="" />
                     </a>
-                    <a href="{% static 'img/Galeria-test/img_mountains_wide.' %}jpg" data-fancybox="gall-new1"
-                        data-caption="Autor - Imagen 02">
-                        <img src="{% static 'img/Galeria-test/img_mountains_wide.' %}jpg" alt="" />
-                    </a>
-                    <a href="{% static 'img/Galeria-test/img_nature_wide.jpg' %}" data-fancybox="gall-new1"
-                        data-caption="Autor - Imagen 05">
-                        <img src="{% static 'img/Galeria-test/img_nature_wide.jpg' %}" alt="" />
-                    </a>
+                    {% endfor %}
                     <div style="text-align: end;">
-                        <a href="{% url 'gal'%}">
-                            <p>Galeria --></p>
+                        <a href="{% url 'gal' link.not_gal.nombre_not %}">
+                            <p>Galeria <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                    fill="currentColor" class="bi bi-box-arrow-in-right" viewBox="0 0 24 16">
+                                    <path fill-rule="evenodd"
+                                        d="M6 3.5a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 0-1 0v2A1.5 1.5 0 0 0 6.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-8A1.5 1.5 0 0 0 5 3.5v2a.5.5 0 0 0 1 0v-2z" />
+                                    <path fill-rule="evenodd"
+                                        d="M11.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H1.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z" />
+                                </svg></p>
                         </a>
                     </div>
                 </div>
@@ -131,6 +129,6 @@
     {% endblock contenido %}
     {% block categorias %}
     {% for x in categorias %}
-        <li><a href="{% url 'categ' x.nombre_catg %}">{{x.nombre_catg}}</a></li>
-    {% endfor %}                        
-{% endblock categorias %}
+    <li><a href="{% url 'categ' x.nombre_catg %}">{{x.nombre_catg}}</a></li>
+    {% endfor %}
+    {% endblock categorias %}

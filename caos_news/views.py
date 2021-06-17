@@ -78,11 +78,13 @@ def noticias(request,id):
     categoria = Categoria.objects.all()
     try:
         noti = Noticia.objects.get(nombre_not=id)
-        context = {"noticia":noti,"categorias":categoria}
-        return render(request, "noticia.html",context)
+        gale = Galeria.objects.filter(not_gal=noti)[:3]
+        link_g= Galeria.objects.filter(not_gal=noti)[1]
+        contexto = {"noticia":noti,"categorias":categoria,"galeria":gale,"link":link_g}
+        return render(request, "noticia.html",contexto)
     except:
-        context ={"noticia":"No existe esa Noticia","categorias":categoria}
-        return render(request,"Noticia.html",context)
+        contexto ={"noticia":"No existe esa Noticia","categorias":categoria}
+        return render(request,"Noticia.html",contexto)
 ########################################################################################################################
 def contactanos(request):
     categoria = Categoria.objects.all()
@@ -102,8 +104,12 @@ def contactanos(request):
         come.save()
     return  render(request,"Contacto.html",context)
 ########################################################################################################################   
-def galeria(request):
-    return render(request,"galeria.html")
+def galeria(request,id):
+    categoria = Categoria.objects.all()
+    gale = Galeria.objects.filter(not_gal=id)[1]
+    mostrar= Galeria.objects.filter(not_gal=id)
+    contexto={"categorias":categoria,"galeria":gale,"todo":mostrar}
+    return render(request,"galeria.html",contexto)
 ########################################################################################################################
 def nosotros(request):
     categoria = Categoria.objects.all()
@@ -118,7 +124,7 @@ def registrar(request):
         try:
             us = User.objects.get(username=user)
             mensaje = "Usuario existente."
-            context = {"categorias":categoria,"mensaje":mensaje}           
+            contexto = {"categorias":categoria,"mensaje":mensaje}           
         except:
             nombre = request.POST.get("txtnombre")
             apell = request.POST.get("txtapellido")

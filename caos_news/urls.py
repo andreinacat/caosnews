@@ -4,7 +4,7 @@ from .views import insertar_img, modificar,b_modificar,index,galeria,contactanos
 
 urlpatterns = [   
     path('',index,name="index"),
-    path('galeria/',galeria,name='gal'),
+    path('galeria/<id>/',galeria,name='gal'),
     path('contacto/',contactanos,name='contac'),
     path('noticia/<id>/',noticias,name='noti'),
     path('nosotros/',nosotros,name='nos'),
