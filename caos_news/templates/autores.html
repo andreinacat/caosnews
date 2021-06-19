@@ -43,6 +43,24 @@
 {% endblock link_activos %}
    <!--Miembros-->
 {% block contenido%}
+<main>
+        <!--Barra de busqueda-->
+        <nav class="navbar sticky-top" id="barra-busqueda">
+            <div class="container-fluid ">
+                <span class="navbar-text">
+                {% if user.is_authenticated %}
+                    <h4> Bienvenido(a) {{user.first_name}} {{user.last_name}} </h4>
+                {% else %}
+                    <h4>Noticas Frescas</h4>
+                {% endif %} 
+                </span>
+                <form class="d-flex" method="POST" action="{% url 'filter_d'%}">
+                {% csrf_token %}
+                    <input class="form-control me-2" type="search" placeholder="Noticias Frescas..." name="txtbusqueda" aria-label="Search">
+                    <button id="boton" class="btn btn-outline" type="submit">Buscar</button>
+                </form>
+            </div>
+        </nav>
     <section class="container-fluid">
         <div class="row ms-5 p-5">
             <div class="d-block text-center mt-4">
@@ -51,10 +69,10 @@
             <div class="row justify-content-center">
             {% for item in users %}
                 <div id="tarjeta" class="card me-auto mt-4" style="width: 18rem; border-radius: 15px;">
-                    <img src="{% static 'img/team/fem-01.jpg' %}" class="card-img-top" alt="...">
+                    <a href="{% url 'f_autor' item.username %}" style="text-decoration: none;"><img src="{% static 'img/team/fem-01.jpg' %}" class="card-img-top" alt="...">
                     <div class="card-body">
-                        <p id="texto-tarj" class="card-text" style="text-align: center;" >{{item.username}}</p>
-                    </div>
+                        <p id="texto-tarj" class="card-text" style="text-align: center" >{{item.username}}</p>
+                    </div></a>
                 </div>
             {% endfor %}
             </div>          

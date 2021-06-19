@@ -43,8 +43,9 @@
                 <span class="navbar-text">
                     <h4>Noticias Frescas</h4>
                 </span>
-                <form class="d-flex">
-                    <input class="form-control me-2" type="search" placeholder="Buscar..." aria-label="Search">
+                <form class="d-flex" method="POST" action="{% url 'filter_d'%}">
+                {% csrf_token %}
+                    <input class="form-control me-2" type="search" placeholder="Noticias Frescas..." name="txtbusqueda" aria-label="Search">
                     <button id="boton" class="btn btn-outline" type="submit">Buscar</button>
                 </form>
             </div>

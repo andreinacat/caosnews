@@ -43,6 +43,24 @@
     </li>
 {% endblock link_activos %}
 {% block contenido %}
+<main>
+        <!--Barra de busqueda-->
+        <nav class="navbar sticky-top" id="barra-busqueda">
+            <div class="container-fluid ">
+                <span class="navbar-text">
+                {% if user.is_authenticated %}
+                    <h4> Bienvenido(a) {{user.first_name}} {{user.last_name}} </h4>
+                {% else %}
+                    <h4>Noticas Frescas</h4>
+                {% endif %} 
+                </span>
+                <form class="d-flex" method="POST" action="{% url 'filter_d'%}">
+                {% csrf_token %}
+                    <input class="form-control me-2" type="search" placeholder="Noticias Frescas..." name="txtbusqueda" aria-label="Search">
+                    <button id="boton" class="btn btn-outline" type="submit">Buscar</button>
+                </form>
+            </div>
+        </nav>
         <!--Galeria-->
         <section class="container-fluid p-5" style="min-height: 34rem;" id="galeria">
             {% for x in todo %}

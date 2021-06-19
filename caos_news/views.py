@@ -1,7 +1,6 @@
 from django.contrib import auth
-from django.db.models import Count
 from django.shortcuts import render
-from django.contrib.auth.models import  User
+from django.contrib.auth.models import User
 from .models import Categoria,Galeria,Noticia,Comentarios
 from django.contrib.auth import authenticate,logout,login
 from django.contrib.auth.decorators import login_required
@@ -21,6 +20,7 @@ def busq_autor(request):
     categoria = Categoria.objects.all()  
     context = {"categorias":categoria,"users":users_n}
     return  render(request,"autores.html",context)
+
 @login_required(login_url='/Ingresar/')
 def mis_news(request):
     user = User.objects.get(username=request.user.username)
@@ -49,14 +49,17 @@ def ingresar(request):
     return render(request,"ingresar.html",contexto)
 ########################################################################################################################
 def index(request):
-    user = User.objects.filter(groups=1)
-    noti=Noticia.objects.aggregate(Count('autor'))
-    categoria = Categoria.objects.all()  
+    categoria = Categoria.objects.all()
     noti_all = Noticia.objects.filter(publicar=True).order_by('-fecha_not')[:3]
     noti_index = Noticia.objects.filter(publicar=True).order_by('-fecha_not')[4:8]
-    contexto = {"categorias":categoria,"noticias":noti_all,"noticias_index":noti_index,"autores":noti}
+    autor = User.objects.filter(groups=1)
+
+    not_user = Noticia.objects.filter(publicar=True).count()  
+    contexto = {"categorias":categoria,"noticias":noti_all,"noticias_index":noti_index,"autores":autor,"cantidad":not_user}
     return render(request,"index.html",contexto) 
 ########################################################################################################################
+###############  BUSQUEDAS    #############################################
+
 def filtro_busqueda(request):
     categoria = Categoria.objects.all()
     noti_all = Noticia.objects.all()
@@ -65,7 +68,15 @@ def filtro_busqueda(request):
         noti_all = Noticia.objects.filter(publicar=True,nombre_not__contains=busqueda)
         cantidad = Noticia.objects.filter(publicar=True,nombre_not__contains=busqueda).count()
     contexto = {"categorias":categoria,"noticias":noti_all,"cantidad":cantidad}
-    return render(request, 'index.html',contexto)
+    return render(request, 'busqueda.html',contexto)
+
+def filtro_autor(request,id):
+    user = User.objects.get(username=id)
+    categoria = Categoria.objects.all()
+    noti_all = Noticia.objects.filter(publicar=True,autor = user)
+    cantidad = Noticia.objects.filter(publicar=True,autor = user).count()
+    contexto = {"categorias":categoria,"noticias":noti_all,"cantidad":cantidad,"autor":user}
+    return render(request, 'busque_autor.html',contexto)
 ########################################################################################################################
 def categoria(request,id):
     cate_all = Categoria.objects.all()
