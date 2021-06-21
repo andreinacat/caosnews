@@ -92,7 +92,7 @@ def noticias(request,id):
         gale = Galeria.objects.filter(not_gal=noti)[:3]
         link_g= Galeria.objects.filter(not_gal=noti)[1]
         contexto = {"noticia":noti,"categorias":categoria,"galeria":gale,"link":link_g}
-        return render(request, "noticia.html",contexto)
+        return render(request, "Noticia.html",contexto)
     except:
         contexto ={"noticia":"No existe esa Noticia","categorias":categoria}
         return render(request,"Noticia.html",contexto)
