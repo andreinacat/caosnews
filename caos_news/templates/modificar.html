@@ -78,14 +78,13 @@
                             alt="">
                     </div>
                     <div class="col-md-7">
-                        <form action="{% url 'modif' %}" method="POST" enctype="multipart/form-data">
+                        <form action="{% url 'modif' %}" method="POST" enctype="multipart/form-data" onsubmit="validar_modi()">
                             {% csrf_token %}
                             <div class="form-group col-md-10">
-                                <label class="font-weight-bold">Titulo Noticia <span id="nombre_span"
-                                        class="text-danger">*</span></label>
+                                <label class="font-weight-bold">Titulo Noticia</label>
                                 <input id="txttitulo" type="text" class="form-control" id="for-input" name="titulo"
                                     placeholder="Titulo" required 
-                                    minlength="3" maxlength="25" value="{{noticias.nombre_not}}">
+                                    minlength="3" maxlength="25" value="{{noticias.nombre_not}}" >
                             </div>
                             <div class="form-group" style="width: 84.1%;">
                                 <label class="font-weight-bold">Categoria <span class="text-danger"
@@ -126,6 +125,34 @@
                         </form>
                     </div>
         </section>
+           <script>
+            /*Validacion modificaciones*/
+            function validar_modi() {           
+                var rc = validar_categoria();
+                var rt = validar_txt();
+                if (rc == true && rt == true) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Exito',
+                        text: 'Tu Noticia ha sido Modificada!!',
+                        showConfirmButton: true,
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            document.enviar_noti.submit();
+                            return true;
+                        }
+                    })
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Formulario Con Errores!!!',
+                        text: 'Favor de revisar los formatos establecidos.'
+                    })
+                    return false;
+                }
+            }
+        </script> -->
+
         {% endblock contenido %}
 
 

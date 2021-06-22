@@ -54,7 +54,7 @@ def index(request):
     noti_index = Noticia.objects.filter(publicar=True).order_by('-fecha_not')[4:8]
     autor = User.objects.filter(groups=1)
 
-    not_user = Noticia.objects.filter(publicar=True).count()  
+    not_user = Noticia.objects.filter(publicar=True,autor=autor) 
     contexto = {"categorias":categoria,"noticias":noti_all,"noticias_index":noti_index,"autores":autor,"cantidad":not_user}
     return render(request,"index.html",contexto) 
 ########################################################################################################################
@@ -199,21 +199,25 @@ def modificar(request):
         redacta = request.POST.get("txtnoticia")
         img = request.FILES.get("img_noti")
         cate = request.POST.get("txtcategoria")
-        obj_cate = Categoria.objects.get(nombre_catg=cate)
         try:
+            obj_cate = Categoria.objects.get(nombre_catg=cate)
             noti = Noticia.objects.get(nombre_not=titulo)
             noti.redac = redacta
             noti.categoria= obj_cate
             if img is not None:
                 noti.img_not = img
+            noti.publicar=False
             noti.comentario ='En espera de Revision.'
             noti.save()
+            flag=True
             mensaje="Noticia modificada con exito!!."
         except:
+            flag = False
             mensaje="La noticia no pudo ser modificada."
+    user = User.objects.get(username=request.user.username)
     cate_all = Categoria.objects.all()
-    noti_all = Noticia.objects.all()
-    contexto={"noticias":noti_all,"categorias":cate_all,"mensaje":mensaje}
+    noti_all = Noticia.objects.filter(autor=user)
+    contexto={"noticias":noti_all,"categorias":cate_all,"mensaje":mensaje,"flag":flag}
     return render(request,"mis_notis.html",contexto)
 ########################################################################################################################
 @login_required(login_url='/Ingresar/')

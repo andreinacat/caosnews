@@ -55,9 +55,19 @@
                     <h4>Noticas Frescas</h4>
                     {% endif %}
                 </span>
-                <span class="navbar-text" style="margin-right: 50%;">
+                <span class="navbar-text" style="margin-right: 30%; text-align: center;">
                     <h2>Mis Noticias</h2>
-                    <h6>{{mensaje}}</h6>
+                    {% if flag == False %}
+                        <div class="alert alert-danger" role="alert">
+                            {{mensaje}}
+                        </div>
+                    {% elif flag == True %}
+                        <div class="alert alert-success" role="alert">
+                            {{mensaje}}
+                        </div>
+                    {% else %}
+                        {{mensaje}}
+                    {% endif %}
                 </span>
                 <form class="d-flex" method="POST" action="{% url 'filter_d'%}">
                 {% csrf_token %}
@@ -86,11 +96,8 @@
                         <th scope="row">{{x.nombre_not}}</th>
                         <td>{{x.fecha_not}}</td>
                         <td>{{x.categoria}}</td>
-                        <td class="form-group mb-5">
-                                
-                                <textarea id="txtnoticia" name="txtnoticia" class="form-control"
-                                    placeholder="{{x.redac}}" style="resize: none; width: 300px; height: 200px;"
-                                    oninput="validar_txt()" required>{{noticias.redac}}</textarea>
+                        <td class="" style="width: 400px;">
+                               <p style="overflow: auto; height: 200px;">{{x.redac}}</p>                       
                         </td>
                         <!--<td class="celda">{{x.redac}}</td>-->
                         <td>{{x.comentario}}</td>
@@ -119,9 +126,9 @@
                             {% endif %}
                         </td>
                         <td>
-                            <button id="boton" type="button" class="btn btn-outline"
+                            <button id="boton" type="button" class="btn btn-outline m-1"
                                 onclick="modificar('{{x.nombre_not}}')">Modificar</button>
-                            <button id="boton" type="button" class="btn btn-outline" onclick="gale('{{x.nombre_not}}')"
+                            <button id="boton" type="button" class="btn btn-outline m-1" onclick="gale('{{x.nombre_not}}')"
                                 data-bs-toggle="modal" data-bs-target="#gale_modal">Agregar Imagenes</button>
                         </td>
                     </tr>
