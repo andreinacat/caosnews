@@ -86,7 +86,13 @@
                         <th scope="row">{{x.nombre_not}}</th>
                         <td>{{x.fecha_not}}</td>
                         <td>{{x.categoria}}</td>
-                        <td class="celda">{{x.redac}}</td>
+                        <td class="form-group mb-5">
+                                
+                                <textarea id="txtnoticia" name="txtnoticia" class="form-control"
+                                    placeholder="{{x.redac}}" style="resize: none; width: 300px; height: 200px;"
+                                    oninput="validar_txt()" required>{{noticias.redac}}</textarea>
+                        </td>
+                        <!--<td class="celda">{{x.redac}}</td>-->
                         <td>{{x.comentario}}</td>
                         <td>{% if x.publicar %}
                             <div class="mb-3">
