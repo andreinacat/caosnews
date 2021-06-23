@@ -173,18 +173,20 @@
             </section>
             <section class="container-fluid mt-3">
                 <div class="table-responsive ">
-                    <table class="table table-striped table-hover border">
+                    <table class="table table-hover border">
                         <thead>
                             <tr>
-                                <th scope="col">Colaborador</th>
-                                <th scope="col">Noticias</th>
+                                <th scope="col" style="text-align: center;">Posición</th>
+                                <th scope="col" style="text-align: center;">Colaborador</th>
+                                <th scope="col">Aportes</th>
                             </tr>
                         </thead>
                         <tbody>
                             {% for x in autores  %}
                                 <tr>
-                                    <td>{{x.username}}</td>
-                                    <td> </td>
+                                    <th scope="row" style="text-align: center;">{{forloop.counter}}</th>
+                                    <td style="text-align: center"><p style="font-weight: bold; text-transform: capitalize;">{{x}}</p></td>
+                                    <td>Noticias: {{x.num_n}} </td>
                                 </tr>
                             {% endfor %}
                         </tbody>

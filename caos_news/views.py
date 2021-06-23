@@ -1,10 +1,13 @@
+from typing import Counter
 from django.contrib import auth
+from django.db.models.query_utils import Q
 from django.shortcuts import render
 from django.contrib.auth.models import User
 from .models import Categoria,Galeria,Noticia,Comentarios
 from django.contrib.auth import authenticate,logout,login
 from django.contrib.auth.decorators import login_required
-
+from datetime import datetime
+from django.db.models import Count
 
 # Create your views here.
 def out_session(request):
@@ -52,10 +55,9 @@ def index(request):
     categoria = Categoria.objects.all()
     noti_all = Noticia.objects.filter(publicar=True).order_by('-fecha_not')[:3]
     noti_index = Noticia.objects.filter(publicar=True).order_by('-fecha_not')[4:8]
-    autor = User.objects.filter(groups=1)
-
-    not_user = Noticia.objects.filter(publicar=True,autor=autor) 
-    contexto = {"categorias":categoria,"noticias":noti_all,"noticias_index":noti_index,"autores":autor,"cantidad":not_user}
+    publicada = Count('noticia',filter=Q(noticia__publicar=True))
+    autor = User.objects.annotate(num_n=publicada).filter(groups=1).order_by('-num_n')
+    contexto = {"categorias":categoria,"noticias":noti_all,"noticias_index":noti_index,"autores":autor}
     return render(request,"index.html",contexto) 
 ########################################################################################################################
 ###############  BUSQUEDAS    #############################################
@@ -84,6 +86,11 @@ def categoria(request,id):
     noti = Noticia.objects.filter(categoria=cate,publicar=True).order_by('-fecha_not') 
     context = {"cate":cate,"cate_all":cate_all,"noti_all":noti}
     return render(request,"Categoria.html",context)
+
+
+
+########################################################################################################################
+#######################################  FORMULARIOS   #################################################################
 ########################################################################################################################
 def noticias(request,id):
     categoria = Categoria.objects.all()
@@ -116,10 +123,12 @@ def contactanos(request):
     return  render(request,"Contacto.html",context)
 ########################################################################################################################   
 def galeria(request,id):
+
+    noti_img= Noticia.objects.get(nombre_not=id)
     categoria = Categoria.objects.all()
     gale = Galeria.objects.filter(not_gal=id)[1]
     mostrar= Galeria.objects.filter(not_gal=id)
-    contexto={"categorias":categoria,"galeria":gale,"todo":mostrar}
+    contexto={"categorias":categoria,"galeria":gale,"todo":mostrar,"noti":noti_img}
     return render(request,"galeria.html",contexto)
 ########################################################################################################################
 def nosotros(request):
@@ -208,6 +217,7 @@ def modificar(request):
                 noti.img_not = img
             noti.publicar=False
             noti.comentario ='En espera de Revision.'
+            noti.fecha_not = datetime.now()
             noti.save()
             flag=True
             mensaje="Noticia modificada con exito!!."

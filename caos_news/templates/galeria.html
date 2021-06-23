@@ -42,6 +42,7 @@
         </ul>
     </li>
 {% endblock link_activos %}
+
 {% block contenido %}
 <main>
         <!--Barra de busqueda-->
@@ -63,13 +64,18 @@
         </nav>
         <!--Galeria-->
         <section class="container-fluid p-5" style="min-height: 34rem;" id="galeria">
-            {% for x in todo %}
             <div id="tarjeta">
-                <a href="{{x.imagen.url}}" data-fancybox="gall-new1"
-                    data-caption="Autor imagen-01"><img src="{{x.imagen.url}}" alt=""> </a>
-                <h5>Imagen {{x.cod_img}} - {{x.not_gal.autor}} </h5>
-            </div>
-            {% endfor %}
+                <a href="{{noti.img_not.url}}" data-fancybox="gall-new1"
+                    data-caption="{{noti.autor.username}} imagen-Portada"><img src="{{noti.img_not.url}}" alt=""> </a>
+                <h5>Imagen Portada - {{noti.autor.username}} </h5>
+            </div>           
+                {% for x in todo %}
+                    <div id="tarjeta">
+                        <a href="{{x.imagen.url}}" data-fancybox="gall-new1"
+                            data-caption="{{x.not_gal.autor}} imagen-{{forloop.counter}}"><img src="{{x.imagen.url}}" alt=""> </a>
+                        <h5>Imagen {{forloop.counter}} - {{x.not_gal.autor}} </h5>
+                    </div>
+                {% endfor %}
         </section>
         <section class="container-fluid mt-4 p-5">
             <div class="text-center">

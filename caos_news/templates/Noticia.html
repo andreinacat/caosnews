@@ -91,10 +91,10 @@
                             {{noticia.redac}}
                             {{noticia.redac}}
                         </p>
-                        <a href="{{noticia.img_not.url}}" data-fancybox data-caption="Autor - Imagen 04">
+                        <a href="{{noticia.img_not.url}}" data-fancybox data-caption="{{noticia.autor}} - Imagen Portada">
                             <img src="{{noticia.img_not.url}}" alt="" />
                         </a>
-                        <a href="{{noticia.img_not.url}}" data-fancybox data-caption="Autor - Imagen 01">
+                        <a href="{{noticia.img_not.url}}" data-fancybox data-caption="{{noticia.autor}} - Imagen Portada">
                             <img src="{{noticia.img_not.url}}" alt="" />
                         </a>
                     </div>
@@ -107,7 +107,7 @@
                 </div>
                 <div class="col-3" id="gal-news1">
                     {% for x in galeria %}
-                    <a href="{{x.imagen.url}}" data-fancybox="gall-new1" data-caption="Autor - Imagen {{x.cod_img}}">
+                    <a href="{{x.imagen.url}}" data-fancybox="gall-new1" data-caption="{{x.not_gal.autor}} - Imagen {{forloop.counter}}">
                         <img src="{{x.imagen.url}}" alt="" />
                     </a>
                     {% endfor %}
