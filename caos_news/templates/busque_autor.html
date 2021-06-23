@@ -57,11 +57,11 @@
                 </span>
                 <span class="navbar-text" style="margin-right: 40%;">
                     {% if cantidad == 1 %}
-                        <h2>{{autor}}: {{cantidad}} Noticia Encontrada </h2>
+                        <h3 style="text-transform: capitalize;">{{autor}}: {{cantidad}} Noticia Encontrada </h3>
                     {% elif cantidad == 0 %}
-                        <h2>{{autore}}: Nada </h2>
+
                     {% else %}
-                        <h2>{{autor}}: {{cantidad}} Noticias Encontradas </h2>
+                        <h3 style="text-transform: capitalize;">{{autor}} : {{cantidad}} Noticias Encontradas </h3>
                     {% endif %}
                     
                 </span>

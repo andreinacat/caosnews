@@ -56,7 +56,7 @@ def index(request):
     noti_all = Noticia.objects.filter(publicar=True).order_by('-fecha_not')[:3]
     noti_index = Noticia.objects.filter(publicar=True).order_by('-fecha_not')[4:8]
     publicada = Count('noticia',filter=Q(noticia__publicar=True))
-    autor = User.objects.annotate(num_n=publicada).filter(groups=1).order_by('-num_n')
+    autor = User.objects.annotate(num_n=publicada).filter(groups=1).order_by('-num_n')[:5] ####top 5 Contribuciones #######
     contexto = {"categorias":categoria,"noticias":noti_all,"noticias_index":noti_index,"autores":autor}
     return render(request,"index.html",contexto) 
 ########################################################################################################################
