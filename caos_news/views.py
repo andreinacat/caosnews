@@ -1,4 +1,4 @@
-from typing import Counter
+
 from django.contrib import auth
 from django.db.models.query_utils import Q
 from django.shortcuts import render
@@ -16,7 +16,9 @@ def out_session(request):
     categorias = Categoria.objects.all()
     noti_all = Noticia.objects.filter(publicar=True).order_by('-fecha_not')[:3]
     noti_index = Noticia.objects.filter(publicar=True).order_by('-fecha_not')[4:8]
-    contexto = {"categorias":categorias,"noticias":noti_all,"noticias_index":noti_index}
+    publicada = Count('noticia',filter=Q(noticia__publicar=True))
+    autor = User.objects.annotate(num_n=publicada).filter(groups=1).order_by('-num_n')[:5]
+    contexto = {"categorias":categorias,"noticias":noti_all,"noticias_index":noti_index,"autores":autor}
     return render(request,"index.html",contexto)
 ########################################################################################################################
 def busq_autor(request):
@@ -34,6 +36,7 @@ def mis_news(request):
     return render(request,"mis_notis.html",contexto)
 ########################################################################################################################
 def ingresar(request):
+    categorias = Categoria.objects.all()
     mensaje=""
     if request.POST:
         nombre = request.POST.get("name_user")
@@ -45,11 +48,13 @@ def ingresar(request):
             categorias = Categoria.objects.all()
             noti_all = Noticia.objects.filter(publicar=True).order_by('-fecha_not')[:3]
             noti_index = Noticia.objects.filter(publicar=True).order_by('-fecha_not')[4:8]
-            contexto = {"categorias":categorias,"noticias":noti_all,"noticias_index":noti_index,"nombre":nombreu}
+            publicada = Count('noticia',filter=Q(noticia__publicar=True))
+            autor = User.objects.annotate(num_n=publicada).filter(groups=1).order_by('-num_n')[:5]
+            contexto = {"categorias":categorias,"noticias":noti_all,"noticias_index":noti_index,"nombre":nombreu,"autores":autor}
             return render(request,"index.html",contexto)
         else:
             mensaje="No existe usuario o contraseña incorrecta."
-    contexto={"mensaje":mensaje}
+    contexto={"mensaje":mensaje,"categorias":categorias}
     return render(request,"ingresar.html",contexto)
 ########################################################################################################################
 def index(request):
@@ -73,6 +78,7 @@ def filtro_busqueda(request):
     noti_all = Noticia.objects.all()
     if request.POST:
         busqueda = request.POST.get("txtbusqueda")
+
         noti_all = Noticia.objects.filter(publicar=True,nombre_not__contains=busqueda)
         cantidad = Noticia.objects.filter(publicar=True,nombre_not__contains=busqueda).count()
     contexto = {"categorias":categoria,"noticias":noti_all,"cantidad":cantidad}
