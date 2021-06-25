@@ -4,6 +4,8 @@ from rest_framework import generics
 from caos_news.models import Noticia
 from .serializers import noticias_serialize,noticias_serialize2
 
+
+
 # Create your views here.
 
 class noticiasViewSet(generics.ListAPIView):
@@ -17,6 +19,6 @@ class noticiaCreateViewSet(generics.ListCreateAPIView):
 class noticiaBuscarViewSet(generics.ListAPIView):
     serializer_class = noticias_serialize
     def get_queryset(self):
-        nombre_noticia = self.kwargs['nombre_not']
-        return Noticia.objects.filter(nombre_not=nombre_noticia)
+        nombre_noti = self.kwargs['nombre_not']
+        return Noticia.objects.filter(nombre_not=nombre_noti)
     

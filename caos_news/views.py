@@ -5,9 +5,10 @@ from django.shortcuts import render
 from django.contrib.auth.models import User
 from .models import Categoria,Galeria,Noticia,Comentarios
 from django.contrib.auth import authenticate,logout,login
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required,permission_required
 from datetime import datetime
 from django.db.models import Count
+import requests
 
 # Create your views here.
 def out_session(request):
@@ -58,6 +59,11 @@ def index(request):
     publicada = Count('noticia',filter=Q(noticia__publicar=True))
     autor = User.objects.annotate(num_n=publicada).filter(groups=1).order_by('-num_n')[:5] ####top 5 Contribuciones #######
     contexto = {"categorias":categoria,"noticias":noti_all,"noticias_index":noti_index,"autores":autor}
+    
+    response = requests.get("http://127.0.0.1:8000/api/noticias/")
+    contexto["apinoticias"] = response.json()
+
+    
     return render(request,"index.html",contexto) 
 ########################################################################################################################
 ###############  BUSQUEDAS    #############################################
@@ -169,21 +175,31 @@ def enviar_noti(request):
         img = request.FILES.get("img_noti")
         cate = request.POST.get("txtcategoria")
         obj_cate = Categoria.objects.get(nombre_catg=cate)
-        user = User.objects.get(username=request.user.username)
+        user = request.user.username    
         try:
             noti = Noticia.objects.get(nombre_not=titulo)
             mensaje="El titulo ya Existe!!."
         except:
-            noti = Noticia(
-                nombre_not = titulo,
-                redac = redacta,
-                img_not = img,
-                categoria = obj_cate,
-                autor = user,
-            )
-            noti.save()
+            #####noti = Noticia(
+            #####    nombre_not = titulo,
+            #####    categoria = obj_cate,
+            #####    autor = user,
+            #####)
+            datos_json={
+                "nombre_not":titulo,
+                "autor":user,
+                "redac":redacta,
+                "categoria":obj_cate
+            } 
+            if img is not None:
+                datos_json["img_not"] = img
+
+            response = requests.post('http://127.0.0.1:8000/api/noticias_crear/',data=datos_json)  
+            
+            #noti.save()
     cate_all = Categoria.objects.all()
     contexto = {"categorias": cate_all,"mensaje":mensaje}
+    
     return render(request,"Agregar_noticia.html",contexto)
 ########################################################################################################################
 @login_required(login_url='/Ingresar/')
