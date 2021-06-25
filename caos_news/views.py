@@ -210,17 +210,7 @@ def enviar_noti(request):
             )
             
 
-            noti.save()
-            #########datos_json={
-            #########    "nombre_not":titulo,
-            #########    "autor":user,
-            #########    "redac":redacta,
-            #########    "categoria":obj_cate
-            #########} 
-            #########if img is not None:
-            #########    datos_json["img_not"] = img
-#########
-            ######### response = requests.post('http://127.0.0.1:8000/api/noticias_crear/',data=datos_json)  
+            noti.save() 
     cate_all = Categoria.objects.all()
     contexto = {"categorias": cate_all,"mensaje":mensaje}
     

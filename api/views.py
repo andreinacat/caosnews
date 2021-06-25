@@ -20,5 +20,5 @@ class noticiaBuscarViewSet(generics.ListAPIView):
     serializer_class = noticias_serialize
     def get_queryset(self):
         cate_id = self.kwargs['categoria_id']
-        return Noticia.objects.filter(categoria=cate_id,publicar=True)
+        return Noticia.objects.filter(categoria=cate_id)
     
