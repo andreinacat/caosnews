@@ -15,10 +15,12 @@ def out_session(request):
     logout(request)
     categorias = Categoria.objects.all()
     noti_all = Noticia.objects.filter(publicar=True).order_by('-fecha_not')[:3]
-    noti_index = Noticia.objects.filter(publicar=True).order_by('-fecha_not')[4:8]
     publicada = Count('noticia',filter=Q(noticia__publicar=True))
     autor = User.objects.annotate(num_n=publicada).filter(groups=1).order_by('-num_n')[:5]
-    contexto = {"categorias":categorias,"noticias":noti_all,"noticias_index":noti_index,"autores":autor}
+    response = requests.get("http://127.0.0.1:8000/api/noticias/")
+    contexto = {"categorias":categorias,"noticias":noti_all,"autores":autor}
+    contexto["apinoticias"] = response.json()
+
     return render(request,"index.html",contexto)
 ########################################################################################################################
 def busq_autor(request):
@@ -47,10 +49,11 @@ def ingresar(request):
             nombreu = request.user.username
             categorias = Categoria.objects.all()
             noti_all = Noticia.objects.filter(publicar=True).order_by('-fecha_not')[:3]
-            noti_index = Noticia.objects.filter(publicar=True).order_by('-fecha_not')[4:8]
+            response = requests.get("http://127.0.0.1:8000/api/noticias/")
             publicada = Count('noticia',filter=Q(noticia__publicar=True))
             autor = User.objects.annotate(num_n=publicada).filter(groups=1).order_by('-num_n')[:5]
-            contexto = {"categorias":categorias,"noticias":noti_all,"noticias_index":noti_index,"nombre":nombreu,"autores":autor}
+            contexto = {"categorias":categorias,"noticias":noti_all,"nombre":nombreu,"autores":autor}
+            contexto["apinoticias"] = response.json()
             return render(request,"index.html",contexto)
         else:
             mensaje="No existe usuario o contraseña incorrecta."
@@ -60,10 +63,9 @@ def ingresar(request):
 def index(request):
     categoria = Categoria.objects.all()
     noti_all = Noticia.objects.filter(publicar=True).order_by('-fecha_not')[:3]
-    noti_index = Noticia.objects.filter(publicar=True).order_by('-fecha_not')[4:8]
     publicada = Count('noticia',filter=Q(noticia__publicar=True))
     autor = User.objects.annotate(num_n=publicada).filter(groups=1).order_by('-num_n')[:5] ####top 5 Contribuciones #######
-    contexto = {"categorias":categoria,"noticias":noti_all,"noticias_index":noti_index,"autores":autor}
+    contexto = {"categorias":categoria,"noticias":noti_all,"autores":autor}
     ####### api_1 consumida ######
     response = requests.get("http://127.0.0.1:8000/api/noticias/")
     contexto["apinoticias"] = response.json()

@@ -9,7 +9,7 @@ from .serializers import noticias_serialize,comentario_serializer
 # Create your views here.
 
 class noticiasViewSet(generics.ListAPIView):
-    queryset = Noticia.objects.all()
+    queryset = Noticia.objects.filter(publicar=True).order_by('-fecha_not')
     serializer_class = noticias_serialize
 
 class comentarioCreateViewSet(generics.ListCreateAPIView):
@@ -20,5 +20,5 @@ class noticiaBuscarViewSet(generics.ListAPIView):
     serializer_class = noticias_serialize
     def get_queryset(self):
         cate_id = self.kwargs['categoria_id']
-        return Noticia.objects.filter(categoria=cate_id)
+        return Noticia.objects.filter(categoria=cate_id,publicar=True)
     
