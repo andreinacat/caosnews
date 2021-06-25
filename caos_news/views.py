@@ -64,7 +64,7 @@ def index(request):
     publicada = Count('noticia',filter=Q(noticia__publicar=True))
     autor = User.objects.annotate(num_n=publicada).filter(groups=1).order_by('-num_n')[:5] ####top 5 Contribuciones #######
     contexto = {"categorias":categoria,"noticias":noti_all,"noticias_index":noti_index,"autores":autor}
-    
+    ####### api_1 consumida ######
     response = requests.get("http://127.0.0.1:8000/api/noticias/")
     contexto["apinoticias"] = response.json()
 
@@ -96,6 +96,8 @@ def categoria(request,id):
     cate_all = Categoria.objects.all()
     cate = Categoria.objects.get(nombre_catg=id)
     noti = Noticia.objects.filter(categoria=cate,publicar=True).order_by('-fecha_not') 
+    
+    ####### api3 consumida ######
     url= "http://127.0.0.1:8000/api/noti_buscar/"+str(cate.cod_catg)
     response = requests.get(url)
     
@@ -129,6 +131,7 @@ def contactanos(request):
         apellido_1 = request.POST.get("txtapellido")
         mail = request.POST.get("txtmail")
         comentario = request.POST.get("txtcoment")
+         ####### api_2 consumida ######
         json_datos={ 
             "nombre_c":nombre_1,
             "apellido_c":apellido_1,
