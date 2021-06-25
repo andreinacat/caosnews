@@ -100,7 +100,7 @@
                                 <div class="form-group col-md-12">
                                     <label class="font-weight-bold">Apellido <span id="apellido_span"
                                             class="text-danger">*</span></label>
-                                    <input id="txtapellido" name="txtapellido" type="text"
+                                    <input id="txtap" name="txtapellido" type="text"
                                         class="form-control border border-dark" placeholder="Tu apellido"
                                         oninput="validar_apellido()" required pattern="[A-Za-z]+" minlength="3"
                                         maxlength="25" title="Minimo 3 letras y maximo 25 letras.">
@@ -151,6 +151,7 @@
                                     var re = validar_email();
                                     var rp = validar_pass();
                                     var rchk = validar_check();
+                                    alert('hola')
                                     if (rchk == true) {
                                         if (ru == true && rn == true && ra == true && re == true && rp == true) {
                                             Swal.fire({
