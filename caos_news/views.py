@@ -96,7 +96,12 @@ def categoria(request,id):
     cate_all = Categoria.objects.all()
     cate = Categoria.objects.get(nombre_catg=id)
     noti = Noticia.objects.filter(categoria=cate,publicar=True).order_by('-fecha_not') 
+    url= "http://127.0.0.1:8000/api/noti_buscar/"+str(cate.cod_catg)
+    response = requests.get(url)
+    
+
     context = {"cate":cate,"cate_all":cate_all,"noti_all":noti}
+    context["apibuscar"] = response.json()
     return render(request,"Categoria.html",context)
 
 

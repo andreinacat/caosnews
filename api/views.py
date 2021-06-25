@@ -19,6 +19,6 @@ class comentarioCreateViewSet(generics.ListCreateAPIView):
 class noticiaBuscarViewSet(generics.ListAPIView):
     serializer_class = noticias_serialize
     def get_queryset(self):
-        nombre_noti = self.kwargs['nombre_not']
-        return Noticia.objects.filter(nombre_not=nombre_noti)
+        cate_id = self.kwargs['categoria_id']
+        return Noticia.objects.filter(categoria=cate_id)
     
