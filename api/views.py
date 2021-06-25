@@ -1,8 +1,8 @@
 from django.shortcuts import render
 # permite accedr a vistas genericas
 from rest_framework import generics
-from caos_news.models import Noticia
-from .serializers import noticias_serialize,noticias_serialize2
+from caos_news.models import Noticia,Comentarios
+from .serializers import noticias_serialize,comentario_serializer
 
 
 
@@ -12,9 +12,9 @@ class noticiasViewSet(generics.ListAPIView):
     queryset = Noticia.objects.all()
     serializer_class = noticias_serialize
 
-class noticiaCreateViewSet(generics.ListCreateAPIView):
-    queryset = Noticia.objects.all()
-    serializer_class = noticias_serialize2
+class comentarioCreateViewSet(generics.ListCreateAPIView):
+    queryset = Comentarios.objects.all()
+    serializer_class = comentario_serializer
 
 class noticiaBuscarViewSet(generics.ListAPIView):
     serializer_class = noticias_serialize

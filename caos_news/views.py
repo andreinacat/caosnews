@@ -124,14 +124,19 @@ def contactanos(request):
         apellido_1 = request.POST.get("txtapellido")
         mail = request.POST.get("txtmail")
         comentario = request.POST.get("txtcoment")
-        
-        come = Comentarios(
-            nombre_c = nombre_1,
-            apellido_c = apellido_1,
-            mail_c = mail,
-            coment = comentario
-        )
-        come.save()
+        json_datos={ 
+            "nombre_c":nombre_1,
+            "apellido_c":apellido_1,
+            "mail_c":mail,
+            "coment":comentario}
+        response = requests.post('http://127.0.0.1:8000/api/comentario_crear/',data=json_datos)  
+        ####come = Comentarios(
+        ###    nombre_c = nombre_1,
+        ###    apellido_c = apellido_1,
+        ###    mail_c = mail,
+        ###    coment = comentario
+        ###)
+        ##come.save()
     return  render(request,"Contacto.html",context)
 ########################################################################################################################   
 def galeria(request,id):
@@ -181,28 +186,31 @@ def enviar_noti(request):
         img = request.FILES.get("img_noti")
         cate = request.POST.get("txtcategoria")
         obj_cate = Categoria.objects.get(nombre_catg=cate)
-        user = request.user.username    
+        user = User.objects.get(username=request.user.username)
         try:
             noti = Noticia.objects.get(nombre_not=titulo)
             mensaje="El titulo ya Existe!!."
         except:
-            #####noti = Noticia(
-            #####    nombre_not = titulo,
-            #####    categoria = obj_cate,
-            #####    autor = user,
-            #####)
-            datos_json={
-                "nombre_not":titulo,
-                "autor":user,
-                "redac":redacta,
-                "categoria":obj_cate
-            } 
-            if img is not None:
-                datos_json["img_not"] = img
-
-            response = requests.post('http://127.0.0.1:8000/api/noticias_crear/',data=datos_json)  
+            noti = Noticia(
+                nombre_not = titulo,
+                categoria = obj_cate,
+                autor = user,
+                redac= redacta,
+                img_not= img
+            )
             
-            #noti.save()
+
+            noti.save()
+            #########datos_json={
+            #########    "nombre_not":titulo,
+            #########    "autor":user,
+            #########    "redac":redacta,
+            #########    "categoria":obj_cate
+            #########} 
+            #########if img is not None:
+            #########    datos_json["img_not"] = img
+#########
+            ######### response = requests.post('http://127.0.0.1:8000/api/noticias_crear/',data=datos_json)  
     cate_all = Categoria.objects.all()
     contexto = {"categorias": cate_all,"mensaje":mensaje}
     

@@ -22,10 +22,10 @@ function validar_nombre() {
     return true;
 }
 function validar_apellido() {
-    var appel = document.getElementById('txtapellido').value;
-    if (!appel.trim().length < 3) {
+    var appel = document.getElementById('txtap').value;
+    if (appel.trim().length < 3) {
         document.getElementById('apellido_span').innerText = "* Formato invalido."
-        document.getElementById('txtapellido').focus();
+        document.getElementById('txtap').focus();
         return false;
     }
     document.getElementById('apellido_span').innerText = "*"
